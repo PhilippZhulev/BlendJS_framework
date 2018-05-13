@@ -12,7 +12,7 @@ class Test extends flu.component {
             "    input.remove_value[type=text](remove_val)",
             "    button.remove(remove_1)>Удалить",
             "       span> сейчас",
-            "div.items__wrapper(items_wrap)",
+            "div.items__wrapper(items_wrap)"
         ]
     }
 

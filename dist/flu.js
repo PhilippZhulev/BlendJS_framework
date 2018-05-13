@@ -245,12 +245,14 @@ function Flu () {
                 });
 
                 let elmClone,
-                    fluSupplyClone;
+                    fluSupplyClone,
+                    childClone;
 
                 renderHTML(_output, function (i) {
                     let elm = _output[i].element;
-                    fluSupplyClone = _output[i].fluSupply;
 
+                    fluSupplyClone = _output[i].fluSupply;
+                    childClone = _output[i].childElement;
                     elmClone = elm.cloneNode(true);
 
                     _input.element.append(elmClone);
@@ -275,8 +277,11 @@ function Flu () {
 
                         block[0].fluName = name;
                         block[0].element = elmClone;
+                        block[0].childElement = childClone;
 
-                        fluSupply.push(block[0]);
+                        findFluName (fluSupply, input, function (item) {
+                            item.childElement.push(block[0]);
+                        });
 
                         document.dispatchEvent(_this_.updateEvent);
 
@@ -318,9 +323,6 @@ function Flu () {
                     _input = item;
                 });
                 return _input.element.value;
-            },
-            modify: function(input) {
-
             },
             fluSupply : fluSupply
         }

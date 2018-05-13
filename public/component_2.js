@@ -8,12 +8,11 @@ class Test2 extends flu.component {
         flu.find(data).click("create_1", function () {
 
             i++;
-            let el = this.append("items_wrap", "item");
-            let val = this.value("add_val");
+            let el  = this.append("items_wrap", "item"),
+                val = this.value("add_val");
 
             el.innerBefore(val);
             el.supplement("new_" + i).deliver();
-
         });
 
         //удалить элемент
