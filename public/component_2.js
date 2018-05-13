@@ -11,8 +11,8 @@ class Test2 extends flu.component {
             let el = this.append("items_wrap", "item");
             let val = this.value("add_val");
 
-            //el.inner(val);
-            el.update("new_" + i).deliver();
+            el.innerBefore(val);
+            el.supplement("new_" + i).deliver();
 
         });
 
@@ -25,7 +25,7 @@ class Test2 extends flu.component {
         });
 
         //перебрать элементы
-        flu.find(data).each(function(el, i) {
+        flu.find(data).each(function(el) {
 
             let _thisModel = this;
 

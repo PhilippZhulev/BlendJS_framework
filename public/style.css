@@ -2,7 +2,7 @@ body {
     padding: 30px;
 }
 .items__wrapper {
-    width: 150px;
+    width: 250px;
     min-height: 230px;
     border: 1px solid #000;
 }
@@ -20,6 +20,10 @@ button.create {
 .item {
     padding: 10px 10px;
     border-bottom: 1px solid #dedede;
+}
+.edit {
+    float: right;
+    margin-right: 5px;
 }
 .add_value,
 .remove_value {

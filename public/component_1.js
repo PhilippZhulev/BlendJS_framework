@@ -19,7 +19,7 @@ class Test extends flu.component {
     //РЕЗЕРВ
     supply() {
         return [
-            "div.item(item)>test",
+            "div.item(item)",
             "   button.edit(edit)>edit"
         ]
     }

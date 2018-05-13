@@ -120,19 +120,11 @@ function Flu () {
         }
     }
     function renderHTML(block, func) {
-        let parentID = null;
-        let parent = null;
-
         for(let i = 0; i < block.length; i++) {
-
-            if(block[i].spacesLength === 0) {
-                func(i);
-            }
 
             function eachFluSupply (supply) {
                 supply.childElement.forEach(function (item, inc) {
                     supply.element.append(item.element);
-
                     if(item.childElement !== 0) {
                         eachFluSupply(item);
                     }
@@ -142,6 +134,10 @@ function Flu () {
             if(block[i].childElement.length !== 0) {
                 eachFluSupply(block[i]);
             }
+
+            if(block[i].spacesLength === 0) {
+                func(i);
+            }
         }
     }
     function findFluName (supply, prop, fn) {
@@ -150,7 +146,7 @@ function Flu () {
         (supply.childElement || supply).forEach(function (item, inc) {
 
 
-            if(item.fluName === prop) {
+            if(item.fluName === prop || prop === null) {
                 if(fn !== undefined) {
                     fn(item);
                 }
@@ -223,14 +219,13 @@ function Flu () {
                 let _input = null,
                     _output = [];
 
-                for(let i = 0; i < fluSupply.length; i++) {
-                    if(fluSupply[i].fluName === input) {
-                        _input = fluSupply[i];
-                    }
-                    if(fluSupply[i].fluName === output) {
-                        _output.push(fluSupply[i]);
-                    }
-                }
+                findFluName (fluSupply, input, function (item) {
+                    _input = item;
+                });
+
+                findFluName (fluSupply, output, function (item) {
+                    _output.push(item);
+                });
 
                 renderHTML(_output, function (i) {
                     _input.element.replaceWith(_output[i].element);
@@ -241,8 +236,13 @@ function Flu () {
                 let _input = null,
                     _output = [];
 
-                _input = findFluName (fluSupply, input);
-                _output = findFluName (fluSupply, output);
+                findFluName (fluSupply, input, function (item) {
+                    _input = item;
+                });
+
+                findFluName (fluSupply, output, function (item) {
+                    _output.push(item);
+                });
 
                 let elmClone,
                     fluSupplyClone;
@@ -257,8 +257,8 @@ function Flu () {
                 });
 
                 return {
-                    inner: function (text) {
-                        elmClone.innerHTML = text;
+                    innerBefore: function (text) {
+                        elmClone.prepend(text);
                     },
                     attr : function (key, val) {
                         elmClone.setAttribute(key, val);
@@ -269,17 +269,17 @@ function Flu () {
                     removeClass: function (className) {
                         elmClone.remove.classList(className);
                     },
-                    update : function (name) {
+                    supplement: function (name) {
                         let block = [];
                         createfluSupply([fluSupplyClone], block);
 
                         block[0].fluName = name;
                         block[0].element = elmClone;
-                        block[0].parentElement = _input.flu_id;
 
                         fluSupply.push(block[0]);
 
                         document.dispatchEvent(_this_.updateEvent);
+
                         return {
                             deliver: function () {
                                 elmClone.setAttribute("data-flu-name", block[0].fluName);
@@ -291,7 +291,6 @@ function Flu () {
             click : function(target, func) {
                 findFluName (fluSupply, target, function(item) {
                     item.element.onclick = function () {
-
                         func.call(_this_.find(fluSupply));
                     };
                 });
@@ -299,29 +298,25 @@ function Flu () {
             each: function(func) {
                 let thisElement = this;
                 document.addEventListener("flu.update", function() {
-                    for(let i = 0; i < thisElement.fluSupply.length; i++) {
-                        func.call(_this_.find(fluSupply), thisElement.fluSupply[i], i);
-                    }
+                    findFluName (fluSupply, null, function(item) {
+                        func.call(_this_.find(fluSupply), item);
+                    });
                 });
             },
             remove: function (input) {
                 let _input = null;
 
-                for(let i = 0; i < fluSupply.length; i++) {
-                    if(fluSupply[i].fluName === input) {
-                        _input = fluSupply[i];
-                    }
-                }
+                findFluName (fluSupply, input, function (item) {
+                    _input = item;
+                });
 
                 _input.element.remove();
             },
             value: function (input) {
                 let _input = null;
-                for(let i = 0; i < fluSupply.length; i++) {
-                    if(fluSupply[i].fluName === input) {
-                        _input = fluSupply[i];
-                    }
-                }
+                findFluName (fluSupply, input, function (item) {
+                    _input = item;
+                });
                 return _input.element.value;
             },
             modify: function(input) {
