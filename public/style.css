@@ -1,0 +1,27 @@
+body {
+    padding: 30px;
+}
+.items__wrapper {
+    width: 150px;
+    min-height: 230px;
+    border: 1px solid #000;
+}
+.btns__wrappper,
+.items__wrapper {
+    float: left;
+    margin-left: 15px;
+}
+button.create {
+    margin-bottom: 25px;
+}
+.btns__wrappper button {
+    display: block;
+}
+.item {
+    padding: 10px 10px;
+    border-bottom: 1px solid #dedede;
+}
+.add_value,
+.remove_value {
+    margin-bottom: 10px;
+}
