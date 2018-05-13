@@ -12,8 +12,6 @@ class Test2 extends flu.component {
                 val = this.value("add_val");
 
             el.innerBefore(val);
-
-            //добавить новый элемент во flu.component
             el.supplement("new_" + i).renameChild("edit", "edit_" + i);
 
             flu.update();
@@ -31,7 +29,6 @@ class Test2 extends flu.component {
             let _thisModel = this;
 
             flu.item(el).className("edit", function(element) {
-                console.log(element);
                 flu.item(element).click(function () {
                     _thisModel.remove(this.fluName);
                 });
