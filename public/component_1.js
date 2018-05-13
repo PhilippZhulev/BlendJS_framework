@@ -20,7 +20,8 @@ class Test extends flu.component {
     supply() {
         return [
             "div.item(item)",
-            "   button.edit(edit)>edit"
+            "   button.edit(edit)>edit",
+            "   button.del(del)>delete",
         ]
     }
 

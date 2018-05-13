@@ -16,15 +16,13 @@ class Test2 extends flu.component {
             //добавить новый элемент во flu.component
             el.supplement("new_" + i).renameChild("edit", "edit_" + i);
 
-            console.log(data);
+            flu.update();
         });
 
         //удалить элемент
         flu.find(data).click("remove_1", function () {
-
             let val = this.value("remove_val");
             this.remove("new_" + val);
-
         });
 
         //перебрать элементы
@@ -32,10 +30,9 @@ class Test2 extends flu.component {
 
             let _thisModel = this;
 
-            //перебрать элементы
-            flu.item(el).className("item", function(elm) {
-                //клик по найденому элементу
-                flu.item(elm).click(function () {
+            flu.item(el).className("edit", function(element) {
+                console.log(element);
+                flu.item(element).click(function () {
                     _thisModel.remove(this.fluName);
                 });
             });

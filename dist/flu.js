@@ -166,6 +166,10 @@ function Flu () {
 
     this.updateEvent = new Event("flu.update");
 
+    this.update = function () {
+        return document.dispatchEvent(_this_.updateEvent);
+    };
+
     this.class = function (el) {
         return new el();
     };
@@ -272,18 +276,21 @@ function Flu () {
                         elmClone.remove.classList(className);
                     },
                     supplement: function (name) {
-                        let block = [];
-                        createfluSupply([fluSupplyClone], block);
+                        let block = [],
+                            fsArr = [fluSupplyClone];
+
+                        for(let i = 0; i < childClone.length; i++) {
+                            fsArr.push(childClone[i].fluSupply);
+                        }
+
+                        createfluSupply(fsArr, block);
 
                         block[0].fluName = name;
                         block[0].element = elmClone;
-                        block[0].childElement = childClone;
 
                         findFluName (fluSupply, input, function (item) {
                             item.childElement.push(block[0]);
                         });
-
-                        document.dispatchEvent(_this_.updateEvent);
 
                         return {
                             deliver: function () {
@@ -293,7 +300,7 @@ function Flu () {
                                 findFluName (block[0].childElement, nm, function (item) {
                                     item.fluName = newName;
                                 });
-                            },
+                            }
                         }
                     }
                 }
@@ -342,6 +349,7 @@ function Flu () {
         return {
             click : function(func) {
                 fluSupplyElement.element.onclick = function () {
+                    console.log(1);
                     func.call(fluSupplyElement);
                 };
             },
