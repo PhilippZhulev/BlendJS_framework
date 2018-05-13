@@ -12,7 +12,11 @@ class Test2 extends flu.component {
                 val = this.value("add_val");
 
             el.innerBefore(val);
-            el.supplement("new_" + i).deliver();
+
+            //добавить новый элемент во flu.component
+            el.supplement("new_" + i).renameChild("edit", "edit_" + i);
+
+            console.log(data);
         });
 
         //удалить элемент

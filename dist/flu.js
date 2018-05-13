@@ -288,10 +288,20 @@ function Flu () {
                         return {
                             deliver: function () {
                                 elmClone.setAttribute("data-flu-name", block[0].fluName);
-                            }
+                            },
+                            renameChild: function (nm, newName) {
+                                findFluName (block[0].childElement, nm, function (item) {
+                                    item.fluName = newName;
+                                });
+                            },
                         }
                     }
                 }
+            },
+            rename: function (input, newName) {
+                findFluName (fluSupply, input, function (item) {
+                    item.fluName = newName;
+                });
             },
             click : function(target, func) {
                 findFluName (fluSupply, target, function(item) {
