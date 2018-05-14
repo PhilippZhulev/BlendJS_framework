@@ -1,4 +1,7 @@
 function Flu () {
+
+    this.version = '0.0.7';
+
     const _this_ = this;
 
     let fluSupply = [];
@@ -80,7 +83,7 @@ function Flu () {
                 let spacesLen = arr[i].split(sim[0])[0].match(/ /g);
 
                 if(spacesLen === null) {
-                   spacesLen = 0;
+                    spacesLen = 0;
                 }
 
                 proto_model.push({
@@ -161,19 +164,14 @@ function Flu () {
 
         return result;
     }
-
-    this.version = '1.0.2';
-
     this.updateEvent = new Event("flu.update");
 
     this.update = function () {
         return document.dispatchEvent(_this_.updateEvent);
     };
-
     this.class = function (el) {
         return new el();
     };
-
     this.component = function () {
 
         let _this = this,
@@ -215,7 +213,6 @@ function Flu () {
             }
         }
     };
-
     this.find = function (fluSupply) {
 
         function addElement(mytype, input, output) {
@@ -350,7 +347,6 @@ function Flu () {
             fluSupply : fluSupply
         }
     };
-
     this.item = function (fluSupplyElement) {
         return {
             click : function(func) {
@@ -373,6 +369,3 @@ function Flu () {
 }
 
 const flu = new Flu();
-
-
-
