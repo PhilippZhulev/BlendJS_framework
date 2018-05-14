@@ -1,6 +1,6 @@
 function Flu () {
 
-    this.version = '0.0.7';
+    this.version = '0.0.8';
 
     const _this_ = this;
 
@@ -165,7 +165,6 @@ function Flu () {
         return result;
     }
     this.updateEvent = new Event("flu.update");
-
     this.update = function () {
         return document.dispatchEvent(_this_.updateEvent);
     };

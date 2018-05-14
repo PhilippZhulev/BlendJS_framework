@@ -18,8 +18,8 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['src/*.js', 'dist/*.js'],
-            tasks: ['concat', 'browserSync', 'uglify']
+            files: ['src/*.js', 'public/*.js'],
+            tasks: ['concat', 'uglify']
         },
         browserSync: {
             bsFiles: {
