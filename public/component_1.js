@@ -21,7 +21,7 @@ class Test extends flu.component {
         return [
             "div.item(item)",
             "   button.edit(edit)>edit",
-            "   button.del(del)>delete",
+            "   button.del(del)>delete"
         ]
     }
 

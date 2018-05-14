@@ -11,7 +11,7 @@ class Test2 extends flu.component {
             let el  = this.append("items_wrap", "item"),
                 val = this.value("add_val");
 
-            el.innerBefore(val);
+            el.innerBefore(val + " (" + i + ")");
             el.supplement("new_" + i).renameChild("edit", "edit_" + i);
 
             flu.update();
