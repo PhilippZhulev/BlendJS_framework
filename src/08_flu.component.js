@@ -25,6 +25,10 @@
                     _this.controller.call(fluSupply, fluSupply);
                 }
 
+                if(_this.onEvent !== undefined) {
+                    _this.event.call(fluSupply);
+                }
+
                 _this.fluSupply = fluSupply;
 
                 return fluSupply;

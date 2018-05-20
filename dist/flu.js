@@ -1,10 +1,16 @@
+/*
+* Copyright (c) 2018, Philipp Zhulev.
+*/
+
 function Flu () {
 
     this.version = '0.0.8';
 
     const _this_ = this;
 
-    let fluSupply = [];
+    let fluSupply = [],
+        _dump_ = [];
+
 
     function createFluId () {
         return "flu_" + String(Math.floor(Math.random() * 1000)).substring(0, 5) + "_elm" + String(Math.floor(Math.random() * 2000)).substring(0, 5);
@@ -166,6 +172,7 @@ function Flu () {
     }
     this.updateEvent = new Event("flu.update");
     this.update = function () {
+        _dump_ = [];
         return document.dispatchEvent(_this_.updateEvent);
     };
     this.class = function (el) {
@@ -196,6 +203,10 @@ function Flu () {
 
                 if(_this.controller !== undefined) {
                     _this.controller.call(fluSupply, fluSupply);
+                }
+
+                if(_this.onEvent !== undefined) {
+                    _this.event.call(fluSupply);
                 }
 
                 _this.fluSupply = fluSupply;
@@ -239,22 +250,12 @@ function Flu () {
 
                 if(mytype === "append") {
                     _input.element.append(elmClone);
+                }else if(mytype === "create") {
+                    _input.element.innerHTML = elmClone;
                 }
             });
 
             return {
-                innerBefore: function (text) {
-                    elmClone.prepend(text);
-                },
-                attr : function (key, val) {
-                    elmClone.setAttribute(key, val);
-                },
-                addClass: function (className) {
-                    elmClone.add.classList(className);
-                },
-                removeClass: function (className) {
-                    elmClone.remove.classList(className);
-                },
                 supplement: function (name) {
                     let block = [],
                         fsArr = [fluSupplyClone];
@@ -268,19 +269,51 @@ function Flu () {
                     block[0].fluName = name;
                     block[0].element = elmClone;
 
+                    elmClone.childNodes.forEach(function (item, i) {
+                        block[0].childElement[i].element = item;
+                    });
+
                     findFluName (fluSupply, input, function (item) {
                         item.childElement.push(block[0]);
                     });
 
                     return {
                         deliver: function () {
-                            elmClone.setAttribute("data-flu-name", block[0].fluName);
+                            block[0].element.setAttribute("data-flu-name", block[0].fluName);
                         },
                         renameChild: function (nm, newName) {
                             findFluName (block[0].childElement, nm, function (item) {
                                 item.fluName = newName;
+                                item.fluSupply = item.fluSupply.replace("(" + nm + ")","(" +  newName + ")");
                             });
-                        }
+                        },
+                        innerBefore: function (text) {
+                            block[0].element.prepend(text);
+                        },
+                        innerAfter: function (text) {
+                            block[0].element.append(text);
+                        },
+                        child: function (name) {
+                            return {
+                                inner: function (content) {
+                                    findFluName (block[0].childElement, name, function (item) {
+                                        item.element.innerHTML = content;
+                                    });
+                                }
+                            }
+                        },
+                        attr : function (key, val) {
+                            block[0].element.setAttribute(key, val);
+                        },
+                        addClass: function (className) {
+                            block[0].element.classList.add(className);
+                        },
+                        removeClass: function (className) {
+                            block[0].element.classList.remove(className);
+                        },
+                        inner: function (content) {
+                            block[0].element.innerHTML = content;
+                        },
                     }
                 }
             }
@@ -297,15 +330,42 @@ function Flu () {
                 });
 
                 findFluName (fluSupply, output, function (item) {
-                    _output.push(item);
+                    _output = item;
                 });
 
-                renderHTML(_output, function (i) {
-                    _input.element.replaceWith(_output[i].element);
+                _input.element.replaceWith(_output.element);
+            },
+            target: function (input) {
+
+                let _input = null;
+
+                findFluName (fluSupply, input, function (item) {
+                    _input = item;
                 });
+
+                return {
+                    innerBefore: function (text) {
+                        _input.element.prepend(text);
+                    },
+                    attr: function (key, val) {
+                        _input.element.setAttribute(key, val);
+                    },
+                    addClass: function (className) {
+                        _input.element.classList.add(className);
+                    },
+                    removeClass: function (className) {
+                        _input.element.classList.remove(className);
+                    },
+                    inner: function (content) {
+                        _input.element.innerHTML = content;
+                    }
+                }
             },
             append: function (input, output) {
                 return addElement("append", input, output);
+            },
+            create: function (input, output) {
+                return addElement("create", input, output);
             },
             rename: function (input, newName) {
                 findFluName (fluSupply, input, function (item) {
@@ -319,11 +379,19 @@ function Flu () {
                     };
                 });
             },
-            each: function(func) {
+            onEvent : function(ev, target, func) {
+                findFluName (fluSupply, target, function(item) {
+                    item.element.addEventListener(ev, function (e) {
+                        e.preventDefault();
+                        func.call(_this_.find(fluSupply));
+                    }, false);
+                });
+            },
+            levelUp: function(func) {
                 let thisElement = this;
                 document.addEventListener("flu.update", function() {
                     findFluName (fluSupply, null, function(item) {
-                        func.call(_this_.find(fluSupply), item);
+                        func.call(_this_.item(item), item);
                     });
                 });
             },
@@ -336,7 +404,7 @@ function Flu () {
 
                 _input.element.remove();
             },
-            value: function (input) {
+            getValue: function (input) {
                 let _input = null;
                 findFluName (fluSupply, input, function (item) {
                     _input = item;
@@ -348,23 +416,24 @@ function Flu () {
     };
     this.item = function (fluSupplyElement) {
         return {
-            click : function(func) {
-                fluSupplyElement.element.onclick = function () {
-                    console.log(1);
-                    func.call(fluSupplyElement);
-                };
-            },
-            className : function (className, func) {
+            filterByClass : function (className, func) {
                 if(fluSupplyElement.classes !== 0) {
                     for(let i = 0; i < fluSupplyElement.classes.length; i++) {
                         if(fluSupplyElement.classes[i] === className) {
-                            func(fluSupplyElement);
+                            func({
+                                element : fluSupplyElement,
+                                getAttr: function(name) {
+                                    return fluSupplyElement.element.getAttribute(name);
+                                }
+                            });
                         }
                     }
+
                 }
             }
         }
-    }
+    };
+
 }
 
 const flu = new Flu();

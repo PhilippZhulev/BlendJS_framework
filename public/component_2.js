@@ -2,41 +2,53 @@ class Test2 extends flu.component {
 
     //КОНТРОЛЛЕР
     controller(data) {
-        let i = 0;
+        const fluData = flu.find(data);
+
+        let i = 0,
+            el = null;
+
+
+        fluData.onEvent("keyup", "add_val", function () {
+            let val = this.getValue("add_val");
+
+            if(el === null) {
+                el = this.append("items_wrap", "item").supplement("item_" + i);
+                el.renameChild("text", "text_"  +  i);
+            }
+
+            if(val.length < 8) {
+                el.child("text_"  +  i).inner(val);
+            }else if (val.length === 8){
+                el.innerAfter("...");
+            }
+        });
 
         //добавить элемент
-        flu.find(data).click("create_1", function () {
+        fluData.click("create_1", function () {
 
-            i++;
-            let el  = this.append("items_wrap", "item"),
-                val = this.value("add_val");
+            el.innerAfter(" (" + i + ")");
+            el.attr("data-index", i);
+            el = null;
 
-            el.innerBefore(val + " (" + i + ")");
-            el.supplement("new_" + i).renameChild("edit", "edit_" + i);
+            let control = this.append("item_" + i, "control").supplement("control_" + i);
+
+            control.renameChild("edit", "edit_"  + i);
+            control.renameChild("del", "del_"  + i);
 
             flu.update();
+            i++;
         });
 
         //удалить элемент
-        flu.find(data).click("remove_1", function () {
-            let val = this.value("remove_val");
-            this.remove("new_" + val);
+        fluData.click("remove_1", function () {
+            let val = this.getValue("remove_val");
+            this.remove("item_" + val);
         });
 
-        //перебрать элементы
-        flu.find(data).each(function(el) {
-
-            let _thisModel = this;
-
-            flu.item(el).className("edit", function(element) {
-                flu.item(element).click(function () {
-                    _thisModel.remove(this.fluName);
-                });
-            });
-
+        fluData.click("del_0", function () {
+            this.remove("item_0");
         });
     }
-
 }
 
 
