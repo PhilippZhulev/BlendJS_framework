@@ -7,7 +7,7 @@ class Test extends flu.component {
             "div.btns__wrappper",
             "    div>Создать элемент",
             "    input.add_value[type=text](add_val)",
-            "    button.create(create_1)>Cохранить",
+            "    button.create(create_1)>Новый элемент",
 
             "    div>Удалить по index",
             "    input.remove_value[type=text](remove_val)",

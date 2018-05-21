@@ -299,6 +299,16 @@ function Flu () {
                                     findFluName (block[0].childElement, name, function (item) {
                                         item.element.innerHTML = content;
                                     });
+                                },
+                                innerAfter: function (content) {
+                                    findFluName (block[0].childElement, name, function (item) {
+                                        item.element.append(content);
+                                    });
+                                },
+                                innerBefore: function (content) {
+                                    findFluName (block[0].childElement, name, function (item) {
+                                        item.element.prepend(content);
+                                    });
                                 }
                             }
                         },
@@ -319,22 +329,48 @@ function Flu () {
             }
         }
         function getEvent(prop, func) {
+            let bef = null;
+            if(prop.before !== undefined) {
+                bef = prop.before.call(_this_.reg(fluSupply));
+            }
             document.addEventListener("flu.update", function () {
                 findFluName (fluSupply, prop.target, function(item) {
-                    return func(item);
+                    return func(item, bef);
                 });
             });
 
             _this_.update();
         }
-        function eventProp (prop) {
-            prop.run.call(_this_.reg(fluSupply));
+        function eventProp (prop, before) {
+            prop.run.call(_this_.reg(fluSupply), before);
             if(prop.update === true) {
                 _this_.update();
             }
         }
 
         return {
+            target: function(fluName) {
+                let _input = null;
+                findFluName (fluSupply, fluName, function (item) {
+                    _input = item;
+                });
+
+                return {
+                    childIndex : function (name) {
+                        let index;
+                        for(let i = 0; i <  _input.childElement.length; i++) {
+                            if(_input.childElement[i].fluName === name) {
+                                index = i
+                            }
+                        }
+
+                        return i;
+                    },
+                    childLength : function () {
+                        return _input.childElement.length;
+                    },
+                }
+            },
             refactor: function (input, output) {
 
                 let _input = null,
@@ -363,16 +399,16 @@ function Flu () {
             },
             onEvent : {
                 click: function (prop) {
-                    return getEvent(prop, function (item) {
+                    return getEvent(prop, function (item, before) {
                         item.element.onclick = function () {
-                            eventProp (prop);
+                            eventProp (prop, before);
                         };
                     });
                 },
                 keyup: function (prop) {
-                    return getEvent(prop, function (item) {
+                    return getEvent(prop, function (item, before) {
                         item.element.onkeyup = function () {
-                            eventProp (prop);
+                            eventProp (prop, before);
                         };
                     });
                 },
@@ -394,12 +430,19 @@ function Flu () {
 
                 _input.element.remove();
             },
-            getValue: function (input) {
+            value: function (input) {
                 let _input = null;
                 findFluName (fluSupply, input, function (item) {
                     _input = item;
                 });
-                return _input.element.value;
+                return {
+                    get: function () {
+                        return _input.element.value;
+                    },
+                    set: function (val) {
+                        return _input.element.value = val;
+                    }
+                };
             },
             fluSupply : fluSupply
         }
