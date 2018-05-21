@@ -223,7 +223,7 @@ function Flu () {
             }
         }
     };
-    this.find = function (fluSupply) {
+    this.reg = function (fluSupply) {
 
         function addElement(mytype, input, output) {
             let _input = null,
@@ -318,6 +318,21 @@ function Flu () {
                 }
             }
         }
+        function getEvent(prop, func) {
+            document.addEventListener("flu.update", function () {
+                findFluName (fluSupply, prop.target, function(item) {
+                    return func(item);
+                });
+            });
+
+            _this_.update();
+        }
+        function eventProp (prop) {
+            prop.run.call(_this_.reg(fluSupply));
+            if(prop.update === true) {
+                _this_.update();
+            }
+        }
 
         return {
             refactor: function (input, output) {
@@ -335,32 +350,6 @@ function Flu () {
 
                 _input.element.replaceWith(_output.element);
             },
-            target: function (input) {
-
-                let _input = null;
-
-                findFluName (fluSupply, input, function (item) {
-                    _input = item;
-                });
-
-                return {
-                    innerBefore: function (text) {
-                        _input.element.prepend(text);
-                    },
-                    attr: function (key, val) {
-                        _input.element.setAttribute(key, val);
-                    },
-                    addClass: function (className) {
-                        _input.element.classList.add(className);
-                    },
-                    removeClass: function (className) {
-                        _input.element.classList.remove(className);
-                    },
-                    inner: function (content) {
-                        _input.element.innerHTML = content;
-                    }
-                }
-            },
             append: function (input, output) {
                 return addElement("append", input, output);
             },
@@ -372,20 +361,21 @@ function Flu () {
                     item.fluName = newName;
                 });
             },
-            click : function(target, func) {
-                findFluName (fluSupply, target, function(item) {
-                    item.element.onclick = function () {
-                        func.call(_this_.find(fluSupply));
-                    };
-                });
-            },
-            onEvent : function(ev, target, func) {
-                findFluName (fluSupply, target, function(item) {
-                    item.element.addEventListener(ev, function (e) {
-                        e.preventDefault();
-                        func.call(_this_.find(fluSupply));
-                    }, false);
-                });
+            onEvent : {
+                click: function (prop) {
+                    return getEvent(prop, function (item) {
+                        item.element.onclick = function () {
+                            eventProp (prop);
+                        };
+                    });
+                },
+                keyup: function (prop) {
+                    return getEvent(prop, function (item) {
+                        item.element.onkeyup = function () {
+                            eventProp (prop);
+                        };
+                    });
+                },
             },
             levelUp: function(func) {
                 let thisElement = this;
