@@ -415,7 +415,7 @@ function Flu () {
             },
             append: function (input, output) {
                 return addElement("append", input, output);
-            },
+            }, 
             create: function (input, output) {
                 return addElement("create", input, output);
             },
