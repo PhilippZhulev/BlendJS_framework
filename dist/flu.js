@@ -359,7 +359,7 @@ function Flu () {
         }
 
         return {
-            target: function(fluName) {
+            it: function(fluName) {
                 let _input = null;
                 findFluName (fluSupply, fluName, function (item) {
                     _input = item;
@@ -389,6 +389,12 @@ function Flu () {
                     },
                     inner: function (content) {
                         _input.element.innerHTML = content;
+                    },
+                    innerAfter: function (content) {
+                        _input.element.append(content);
+                    },
+                    innerBefore: function (content) {
+                        _input.element.prepend(content);
                     }
                 }
             },
