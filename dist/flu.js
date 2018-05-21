@@ -270,7 +270,9 @@ function Flu () {
                     block[0].element = elmClone;
 
                     elmClone.childNodes.forEach(function (item, i) {
-                        block[0].childElement[i].element = item;
+                        if(block[0].childElement[i] !== undefined) {
+                            block[0].childElement[i].element = item;
+                        }
                     });
 
                     findFluName (fluSupply, input, function (item) {
@@ -334,15 +336,23 @@ function Flu () {
                 bef = prop.before.call(_this_.reg(fluSupply));
             }
             document.addEventListener("flu.update", function () {
-                findFluName (fluSupply, prop.target, function(item) {
-                    return func(item, bef);
-                });
+                if(typeof prop.target === "string") {
+                    findFluName (fluSupply, prop.target, function(item) {
+                        return func(item, bef);
+                    });
+                }else if(Array.isArray(prop.target)) {
+                    for(let i = 0; i < prop.target.length; i++) {
+                        findFluName (fluSupply, prop.target[i], function(item) {
+                            return func(item, i);
+                        });
+                    }
+                }
             });
 
             _this_.update();
         }
-        function eventProp (prop, before) {
-            prop.run.call(_this_.reg(fluSupply), before);
+        function eventProp (prop, i) {
+            prop.run.call(_this_.reg(fluSupply), i);
             if(prop.update === true) {
                 _this_.update();
             }
@@ -369,6 +379,17 @@ function Flu () {
                     childLength : function () {
                         return _input.childElement.length;
                     },
+                    attr: {
+                        set : function (name, value) {
+                            _input.element.setAttribute(name, value);
+                        },
+                        get : function (name) {
+                            return _input.element.getAttribute(name);
+                        }
+                    },
+                    inner: function (content) {
+                        _input.element.innerHTML = content;
+                    }
                 }
             },
             refactor: function (input, output) {
@@ -399,27 +420,33 @@ function Flu () {
             },
             onEvent : {
                 click: function (prop) {
-                    return getEvent(prop, function (item, before) {
+                    return getEvent(prop, function (item, i) {
                         item.element.onclick = function () {
-                            eventProp (prop, before);
+                            eventProp (prop, i);
                         };
                     });
                 },
                 keyup: function (prop) {
-                    return getEvent(prop, function (item, before) {
+                    return getEvent(prop, function (item, i) {
                         item.element.onkeyup = function () {
-                            eventProp (prop, before);
+                            eventProp (prop, i);
                         };
                     });
                 },
-            },
-            levelUp: function(func) {
-                let thisElement = this;
-                document.addEventListener("flu.update", function() {
-                    findFluName (fluSupply, null, function(item) {
-                        func.call(_this_.item(item), item);
+                change: function (prop) {
+                    return getEvent(prop, function (item, i) {
+                        item.element.onchange = function () {
+                            eventProp (prop, i);
+                        };
                     });
-                });
+                },
+                keydown: function (prop) {
+                    return getEvent(prop, function (item, i) {
+                        item.element.onkeydown = function () {
+                            eventProp (prop, i);
+                        };
+                    });
+                }
             },
             remove: function (input) {
                 let _input = null;

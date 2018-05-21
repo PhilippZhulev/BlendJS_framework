@@ -6,7 +6,11 @@ class Test2 extends flu.component {
 
         let el = null,
             val,
-            i = 0;
+            i = 0,
+            text = [],
+            del = [],
+            edit = [],
+            items = [];
 
         reg.onEvent.keyup({
             target: "add_val",
@@ -15,13 +19,16 @@ class Test2 extends flu.component {
 
                 if(el === null) {
                     el = this.append("items_wrap", "item").supplement("item_" + i);
+
+                    text.push("text_" + i);
+
+                    el.renameChild("text", "text_" + i);
                 }
 
                 if(val.length <= 10) {
-                    el.child("text").inner(val);
-                }
-                if(val.length === 10) {
-                    el.child("text").innerAfter("...");
+                    el.child(text[i]).inner(val);
+                } else {
+                    el.child(text[i]).innerAfter("...");
                 }
 
             }
@@ -34,8 +41,20 @@ class Test2 extends flu.component {
                 this.value("add_val").set("");
 
                 el.innerAfter(" (" + i + ")");
+
+                items.push("item_" + i);
+                del.push("del_" + i);
+                edit.push("edit_" + i);
+
+                let control = this.append(items[i], "control").supplement("control_" + i);
+
+                control.renameChild("del", del[i]);
+                control.renameChild("edit", edit[i]);
+
                 i = this.target("items_wrap").childLength();
                 el = null;
+
+                console.log(this.fluSupply);
             }
         });
 
@@ -47,10 +66,30 @@ class Test2 extends flu.component {
             }
         });
 
-        reg .onEvent.click({
-            target: "del_0",
-            run: function () {
+        reg.onEvent.click({
+            target: del,
+            run: function (i) {
+                this.remove(items[i]);
+            }
+        });
 
+        reg.onEvent.click({
+            target: edit,
+            run: function (i) {
+                this.value("edit_val").set("");
+                this.refactor(text[i], "edit_val");
+                this.target("edit_val").attr.set("data-target", text[i]);
+            }
+        });
+
+        reg.onEvent.change({
+            target: "edit_val",
+            run: function () {
+                let elem = this.target("edit_val").attr.get("data-target");
+                let newVal = this.value("edit_val").get();
+
+                this.target(elem).inner(newVal);
+                this.refactor("edit_val", elem);
             }
         });
     }
