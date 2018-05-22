@@ -109,7 +109,7 @@ function Flu () {
                         proto_model[i - 1].childElement.push(proto_model[i]);
                         parentMem = proto_model[i - 1];
                     }
-                    if(proto_model[i].spacesLength === proto_model[i - 1].spacesLength) {
+                    if(proto_model[i].spacesLength === proto_model[i - 1].spacesLength && proto_model[i].spacesLength !== 0) {
                         parentMem.childElement.push(proto_model[i]);
                     }
                 }
@@ -415,7 +415,7 @@ function Flu () {
             },
             append: function (input, output) {
                 return addElement("append", input, output);
-            }, 
+            },
             create: function (input, output) {
                 return addElement("create", input, output);
             },
