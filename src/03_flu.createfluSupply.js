@@ -57,7 +57,7 @@
                 }
 
                 if(attr !== 0) {
-                    let attrArr = attr.split(",") || attr;
+                    let attrArr = attr.split(", " || ",") || attr;
 
                     attrArr.forEach(function (value) {
                         let attrItems = value.split("=");
