@@ -9,6 +9,7 @@ function Flu () {
     const _this_ = this;
 
     let fluSupply = [],
+        element,
         _dump_ = [];
 
 
@@ -181,28 +182,33 @@ function Flu () {
     this.component = function () {
 
         let _this = this,
-            _view = [];
+            _view = [],
+            _modelObj = {};
 
-        if(this.view !== undefined) {
-            createfluSupply(this.view(), _view);
+        if(_this.model !== undefined) {
+            _this.model.call(_modelObj);
+        }
+
+        if(_this.view !== undefined) {
+            createfluSupply(_this.view.call(_modelObj, _modelObj), _view);
         }
 
         return {
             render: function (el) {
-                let element = document.querySelector(el);
+                element = document.querySelector(el);
 
                 renderHTML(_view, function (i) {
                     element.append(_view[i].element);
                 });
 
                 if(_this.supply !== undefined) {
-                    createfluSupply(_this.supply(), fluSupply);
+                    createfluSupply(_this.supply.call(_modelObj), fluSupply);
                 }
 
                 fluSupply = fluSupply.concat(_view);
 
                 if(_this.controller !== undefined) {
-                    _this.controller.call(fluSupply, fluSupply);
+                    _this.controller.call(fluSupply, _modelObj);
                 }
 
                 if(_this.onEvent !== undefined) {
@@ -424,7 +430,7 @@ function Flu () {
                     item.fluName = newName;
                 });
             },
-            onEvent : {
+            onEvent: {
                 click: function (prop) {
                     return getEvent(prop, function (item, i) {
                         item.element.onclick = function () {
@@ -477,9 +483,38 @@ function Flu () {
                     }
                 };
             },
-            fluSupply : fluSupply
+            build: function (arr) {
+                let result = [];
+                let target = element;
+                createfluSupply(arr, result);
+
+                return {
+                    to: function (name) {
+                        findFluName (fluSupply, name, function (item) {
+                            target = item;
+                        });
+                    },
+                    inner: function () {
+                        renderHTML(result, function (i) {
+                            element.innerHTML = result[i].element;
+                        });
+                    },
+                    innerBefore: function () {
+                        renderHTML(result, function (i) {
+                            element.prepend(result[i].element);
+                        });
+                    },
+                    innerAfter: function () {
+                        renderHTML(result, function (i) {
+                            element.append(result[i].element);
+                        });
+                    },
+                }
+            },
+            fluSupply: fluSupply
         }
     };
+
     this.item = function (fluSupplyElement) {
         return {
             filterByClass : function (className, func) {

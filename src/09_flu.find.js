@@ -199,7 +199,7 @@
                     item.fluName = newName;
                 });
             },
-            onEvent : {
+            onEvent: {
                 click: function (prop) {
                     return getEvent(prop, function (item, i) {
                         item.element.onclick = function () {
@@ -252,6 +252,34 @@
                     }
                 };
             },
-            fluSupply : fluSupply
+            build: function (arr) {
+                let result = [];
+                let target = element;
+                createfluSupply(arr, result);
+
+                return {
+                    to: function (name) {
+                        findFluName (fluSupply, name, function (item) {
+                            target = item;
+                        });
+                    },
+                    inner: function () {
+                        renderHTML(result, function (i) {
+                            element.innerHTML = result[i].element;
+                        });
+                    },
+                    innerBefore: function () {
+                        renderHTML(result, function (i) {
+                            element.prepend(result[i].element);
+                        });
+                    },
+                    innerAfter: function () {
+                        renderHTML(result, function (i) {
+                            element.append(result[i].element);
+                        });
+                    },
+                }
+            },
+            fluSupply: fluSupply
         }
     };

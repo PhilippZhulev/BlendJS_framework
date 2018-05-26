@@ -9,5 +9,6 @@ function Flu () {
     const _this_ = this;
 
     let fluSupply = [],
+        element,
         _dump_ = [];
 

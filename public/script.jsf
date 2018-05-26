@@ -1,16 +1,28 @@
 class InputOutput extends flu.component {
 
     view () {
-        return [
-            "h1(hello)",
-            "   span(out)>...",
-            "input[type=text](in)"
-        ]
+        return {{
+            h1(hello)
+               span(out)>...
+            input[type=text](in)
+        }}
+    }
+
+    supply() {
+        return {{
+            div.item(item)
+                span(text)
+
+            div.control(control)
+               button.edit(edit)>edit
+               button.del(del)>delete
+            input.edit_value[type=text](edit_val)
+        }}
     }
 
     controller() {
         const reg = flu.reg(this);
-
+        console.log(reg.fluSupply);
         reg.it("hello").innerBefore("Hello world! I'm ");
 
         reg.onEvent.keydown({
