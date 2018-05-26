@@ -22,7 +22,7 @@ class InputOutput extends flu.component {
 
     controller() {
         const reg = flu.reg(this);
-        console.log(reg.fluSupply);
+
         reg.it("hello").innerBefore("Hello world! I'm ");
 
         reg.onEvent.keydown({

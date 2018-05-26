@@ -22,25 +22,37 @@ function FluCompile() {
 
     this.generateScript = function (include) {
         for(let i = 0; i < include.length; i++) {
-            let htmlResult = include[i];
-            let elmsOrigin =  include[i].split(/{{/g);
-            let elmsEnd =  include[i].split(/}}/g);
+            let ready = include[i],
+                htmlResult = "",
+                elmsOrigin =  include[i].split(/{{/g),
+                elmsEnd =  include[i].split(/}}/g);
 
             let origin = include[i].replace(/{{/g, "["),
                 end = origin.replace(/}}/g, "]");
 
             for(let inc = 0; inc < elmsOrigin.length; inc++) {
+                htmlResult = "";
                 if(inc !== 0) {
-                    let result = elmsOrigin[inc].split("}}")[0];
-                    let pattern = /\r\n|\r|\n/g;
-                    let new_pattern = result.replace(pattern, '",\n"').slice(2).replace('"",', '');
+                    let result = elmsOrigin[inc].split("}}")[0],
+                        pattern = /\r\n|\r|\n/g,
+                        strings = result.split(pattern);
 
-                    htmlResult = htmlResult.replace("{{" + result + "}}", "[" + new_pattern.replace('"",', '').slice(0, -11).replace(/ /g, "") + "]")
+                    for(let inr = 0; inr < strings.length; inr++) {
+                        if(strings[inr].length !== 0) {
+                            let sim = strings[inr].match(/[+*?$^(\(\).#\[\]>)]/g);
+
+                            if(sim !== null) {
+                               htmlResult += '"' + strings[inr].slice(strings[1].split(sim[0])[0].match(/ /g).length) + '"';
+                               if(inr !== strings.length - 2) {
+                                   htmlResult += ",\n";
+                               }
+                            }
+                        }
+                    }
+                    ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
             }
-
-            console.log(htmlResult);
-            eval(htmlResult);
+            eval(ready);
         }
     }
 }
