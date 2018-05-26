@@ -1,7 +1,7 @@
 class InputOutput extends flu.component {
 
     model () {
-        this.prop = "philipp";
+        this.prop = "Philipp";
     }
 
     view () {
