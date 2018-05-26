@@ -1,9 +1,13 @@
 class InputOutput extends flu.component {
 
+    model () {
+        this.prop = "philipp";
+    }
+
     view () {
         return {{
             h1(hello)
-               span(out)>...
+               span(out)>{this.prop}
             input[type=text](in)
         }}
     }

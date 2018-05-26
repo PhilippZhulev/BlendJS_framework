@@ -43,6 +43,8 @@ function FluCompile() {
 
                             if(sim !== null) {
                                htmlResult += '"' + strings[inr].slice(strings[1].split(sim[0])[0].match(/ /g).length) + '"';
+                               htmlResult = htmlResult.replace('{', '"+');
+                               htmlResult = htmlResult.replace('}', '+"');
                                if(inr !== strings.length - 2) {
                                    htmlResult += ",\n";
                                }
@@ -52,6 +54,7 @@ function FluCompile() {
                     ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
             }
+            console.log(ready);
             eval(ready);
         }
     }
