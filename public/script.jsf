@@ -18,7 +18,7 @@ class InputOutput extends flu.component {
 
         reg.it("hello").innerBefore(data.title);
 
-        reg.onEvent.keydown({
+        reg.onEvent.keyup({ 
             target: "in",
             run: function () {
                 let val = this.value("in").get();
