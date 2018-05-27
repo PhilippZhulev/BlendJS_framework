@@ -20,7 +20,7 @@
     </body>
 </html>
 ```
-
+###### JSF
 ```javascript
 class InputOutput extends flu.component {
 
