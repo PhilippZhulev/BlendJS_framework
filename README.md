@@ -1,5 +1,26 @@
 # flu.framework 0.0.7
-#### A Simple Component JSF
+#### A Simple Component
+
+###### HTML
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>FluJs</title>
+        <link rel="stylesheet" href="public/style.css">
+    </head>
+    <body>
+
+        <div class="app"></div>
+
+        <script src="dist/fluCompile.js"></script>
+        <script src="dist/flu.js"></script>
+        <script type="text/flujs" src="public/script.jsf"></script>
+    </body>
+</html>
+```
+
 ```javascript
 class InputOutput extends flu.component {
 
