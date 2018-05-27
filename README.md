@@ -19,40 +19,35 @@ JavaScript open source library for building user interfaces.
 
         <script src="dist/fluCompile.js"></script>
         <script src="dist/flu.js"></script>
-        <script type="text/flujs" src="public/_backup.jsf"></script>
+        <script type="text/flujs" src="public/script.jsf"></script>
     </body>
 </html>
 ```
 ###### JSF
 ```javascript
 class InputOutput extends flu.component {
-
     model () {
         this.title = "Hello";
         this.name = " Nick";
     }
-
     view () {
         return {{
             p(hello)>{this.title}
-            button.btn_ref(btn)>Click!
+            button.my_btn(btn)>Click!
         }}
     }
-
     controller(data) {
         const reg = flu.reg(this);
 
-        reg.onEvent.click({
-            target: "btn",
+        reg.onEvent("btn").click({
             run: function () {
                 this.it("hello").redraw({{
                     p>
-                        b(hello_ref)>{data.title + data.name}
+                        b.ready>{data.title + data.name}
                 }});
             }
         });
     }
-
 }
 
 flu.class(InputOutput).render(".app");

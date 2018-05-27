@@ -336,19 +336,19 @@ function Flu () {
                 }
             }
         }
-        function getEvent(prop, func) {
+        function getEvent(target, prop, func) {
             let bef = null;
-            if(prop.before !== undefined) {
-                bef = prop.before.call(_this_.reg(fluSupply));
-            }
             document.addEventListener("flu.update", function () {
-                if(typeof prop.target === "string") {
-                    findFluName (fluSupply, prop.target, function(item) {
+                if(prop.before !== undefined) {
+                    bef = prop.before.call(_this_.reg(fluSupply));
+                }
+                if(typeof target === "string") {
+                    findFluName (fluSupply, target, function(item) {
                         return func(item, bef);
                     });
-                }else if(Array.isArray(prop.target)) {
-                    for(let i = 0; i < prop.target.length; i++) {
-                        findFluName (fluSupply, prop.target[i], function(item) {
+                }else if(Array.isArray(target)) {
+                    for(let i = 0; i < target.length; i++) {
+                        findFluName (fluSupply, target[i], function(item) {
                             return func(item, i);
                         });
                     }
@@ -404,6 +404,7 @@ function Flu () {
                     },
                     redraw: function (fluHtml) {
                         let block = [];
+
                         createfluSupply(fluHtml, block);
 
                         renderHTML(block, function (i) {
@@ -438,34 +439,36 @@ function Flu () {
                     item.fluName = newName;
                 });
             },
-            onEvent: {
-                click: function (prop) {
-                    return getEvent(prop, function (item, i) {
-                        item.element.onclick = function () {
-                            eventProp (prop, i);
-                        };
-                    });
-                },
-                keyup: function (prop) {
-                    return getEvent(prop, function (item, i) {
-                        item.element.onkeyup = function () {
-                            eventProp (prop, i);
-                        };
-                    });
-                },
-                change: function (prop) {
-                    return getEvent(prop, function (item, i) {
-                        item.element.onchange = function () {
-                            eventProp (prop, i);
-                        };
-                    });
-                },
-                keydown: function (prop) {
-                    return getEvent(prop, function (item, i) {
-                        item.element.onkeydown = function () {
-                            eventProp (prop, i);
-                        };
-                    });
+            onEvent: function (target) {
+                return {
+                    click: function (prop) {
+                        return getEvent(target, prop, function (item, i) {
+                            item.element.onclick = function () {
+                                eventProp(prop, i);
+                            };
+                        });
+                    },
+                    keyup: function (prop) {
+                        return getEvent(target, prop, function (item, i) {
+                            item.element.onkeyup = function () {
+                                eventProp(prop, i);
+                            };
+                        });
+                    },
+                    change: function (prop) {
+                        return getEvent(target, prop, function (item, i) {
+                            item.element.onchange = function () {
+                                eventProp(prop, i);
+                            };
+                        });
+                    },
+                    keydown: function (prop) {
+                        return getEvent(target, prop, function (item, i) {
+                            item.element.onkeydown = function () {
+                                eventProp(prop, i);
+                            };
+                        });
+                    }
                 }
             },
             remove: function (input) {
