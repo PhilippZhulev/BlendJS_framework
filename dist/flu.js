@@ -401,6 +401,14 @@ function Flu () {
                     },
                     innerBefore: function (content) {
                         _input.element.prepend(content);
+                    },
+                    redraw: function (fluHtml) {
+                        let block = [];
+                        createfluSupply(fluHtml, block);
+
+                        renderHTML(block, function (i) {
+                            _input.element.replaceWith(block[i].element);
+                        });
                     }
                 }
             },
@@ -512,26 +520,6 @@ function Flu () {
                 }
             },
             fluSupply: fluSupply
-        }
-    };
-
-    this.item = function (fluSupplyElement) {
-        return {
-            filterByClass : function (className, func) {
-                if(fluSupplyElement.classes !== 0) {
-                    for(let i = 0; i < fluSupplyElement.classes.length; i++) {
-                        if(fluSupplyElement.classes[i] === className) {
-                            func({
-                                element : fluSupplyElement,
-                                getAttr: function(name) {
-                                    return fluSupplyElement.element.getAttribute(name);
-                                }
-                            });
-                        }
-                    }
-
-                }
-            }
         }
     };
 

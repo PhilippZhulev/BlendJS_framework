@@ -1,29 +1,27 @@
 class InputOutput extends flu.component {
 
     model () {
-        this.prop = "--Your Name--";
-        this.title = "Hello world! I'm ";
+        this.title = "Hello";
+        this.name = " Nick";
     }
 
     view () {
         return {{
-            h1(hello)
-               span(out)>{this.prop}
-            input[type=text](in)
+            p(hello)>{this.title}
+            button.btn_ref(btn)>Click!
         }}
     }
 
     controller(data) {
         const reg = flu.reg(this);
 
-        reg.it("hello").innerBefore(data.title);
-
-        reg.onEvent.keyup({
-            target: "in",
+        reg.onEvent.click({
+            target: "btn",
             run: function () {
-                let val = this.value("in").get();
-
-                this.it("out").inner(val);
+                this.it("hello").redraw({{
+                    p>
+                        b(hello_ref)>{data.title + data.name}
+                }});
             }
         });
     }

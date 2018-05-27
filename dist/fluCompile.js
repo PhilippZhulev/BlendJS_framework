@@ -57,7 +57,6 @@ function FluCompile() {
                     ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
             }
-
             eval(ready);
         }
     }

@@ -170,6 +170,14 @@
                     },
                     innerBefore: function (content) {
                         _input.element.prepend(content);
+                    },
+                    redraw: function (fluHtml) {
+                        let block = [];
+                        createfluSupply(fluHtml, block);
+
+                        renderHTML(block, function (i) {
+                            _input.element.replaceWith(block[i].element);
+                        });
                     }
                 }
             },

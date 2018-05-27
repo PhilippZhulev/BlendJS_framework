@@ -19,7 +19,7 @@ JavaScript open source library for building user interfaces.
 
         <script src="dist/fluCompile.js"></script>
         <script src="dist/flu.js"></script>
-        <script type="text/flujs" src="public/script.jsf"></script>
+        <script type="text/flujs" src="public/_backup.jsf"></script>
     </body>
 </html>
 ```
@@ -28,29 +28,27 @@ JavaScript open source library for building user interfaces.
 class InputOutput extends flu.component {
 
     model () {
-        this.prop = "--Your Name--";
-        this.title = "Hello world! I'm ";
+        this.title = "Hello";
+        this.name = " Nick";
     }
 
     view () {
         return {{
-            h1(hello)
-               span(out)>{this.prop}
-            input[type=text](in)
+            p(hello)>{this.title}
+            button.btn_ref(btn)>Click!
         }}
     }
 
     controller(data) {
         const reg = flu.reg(this);
 
-        reg.it("hello").innerBefore(data.title); 
-
-        reg.onEvent.keyup({
-            target: "in",
+        reg.onEvent.click({
+            target: "btn",
             run: function () {
-                let val = this.value("in").get();
-
-                this.it("out").inner(val);
+                this.it("hello").redraw({{
+                    p>
+                        b(hello_ref)>{data.title + data.name}
+                }});
             }
         });
     }
