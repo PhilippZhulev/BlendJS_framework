@@ -1,4 +1,7 @@
 # FluJS_framework 0.1.1 
+
+JavaScript open source library for building user interfaces.
+
 #### A Simple Component
 
 ###### HTML
