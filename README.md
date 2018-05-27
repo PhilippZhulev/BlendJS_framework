@@ -26,6 +26,7 @@ JavaScript open source library for building user interfaces.
 ###### JSF
 ```javascript
 class InputOutput extends flu.component {
+    
     model () {
         this.title = "Hello";
         this.name = " Nick";
@@ -50,6 +51,7 @@ class InputOutput extends flu.component {
             }
         });
     }
+    
 }
 
 flu.class(InputOutput).render(".app");
