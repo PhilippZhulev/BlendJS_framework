@@ -30,12 +30,14 @@ class InputOutput extends flu.component {
         this.title = "Hello";
         this.name = " Nick";
     }
+    
     view () {
         return {{
             p(hello)>{this.title}
             button.my_btn(btn)>Click!
         }}
     }
+    
     controller(data) {
         const reg = flu.reg(this);
 
