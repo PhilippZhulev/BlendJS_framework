@@ -1,7 +1,8 @@
 class InputOutput extends flu.component {
 
     model () {
-        this.prop = "Philipp";
+        this.prop = "--Your Name--";
+        this.title = "Hello world! I'm ";
     }
 
     view () {
@@ -12,22 +13,10 @@ class InputOutput extends flu.component {
         }}
     }
 
-    supply() {
-        return {{
-            div.item(item)
-                span(text)
-
-            div.control(control)
-               button.edit(edit)>edit
-               button.del(del)>delete
-            input.edit_value[type=text](edit_val)
-        }}
-    }
-
-    controller() {
+    controller(data) {
         const reg = flu.reg(this);
 
-        reg.it("hello").innerBefore("Hello world! I'm ");
+        reg.it("hello").innerBefore(data.title);
 
         reg.onEvent.keydown({
             target: "in",

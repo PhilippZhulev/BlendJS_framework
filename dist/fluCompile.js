@@ -23,6 +23,7 @@ function FluCompile() {
     this.generateScript = function (include) {
         for(let i = 0; i < include.length; i++) {
             let ready = include[i],
+                spaces = 0,
                 htmlResult = "",
                 elmsOrigin =  include[i].split(/{{/g),
                 elmsEnd =  include[i].split(/}}/g);
@@ -39,10 +40,12 @@ function FluCompile() {
 
                     for(let inr = 0; inr < strings.length; inr++) {
                         if(strings[inr].length !== 0) {
-                            let sim = strings[inr].match(/[+*?$^(\(\).#\[\]>)]/g);
-
+                            let sim = strings[inr].match(/[+*?$^(\(\).#\[\])>]/g);
                             if(sim !== null) {
-                               htmlResult += '"' + strings[inr].slice(strings[1].split(sim[0])[0].match(/ /g).length) + '"';
+                               if(inr === 1) {
+                                   spaces = strings[1].split(sim[0])[0].match(/ /g).length
+                               }
+                               htmlResult += '"' + strings[inr].slice(spaces) + '"';
                                htmlResult = htmlResult.replace('{', '"+');
                                htmlResult = htmlResult.replace('}', '+"');
                                if(inr !== strings.length - 2) {
@@ -60,6 +63,7 @@ function FluCompile() {
     }
 }
 
-let complie = new FluCompile();
-
-complie.generateScript(complie.include());
+window.onload = function () {
+    let complie = new FluCompile();
+    complie.generateScript(complie.include());
+}

@@ -1,17 +1,17 @@
 class Todo extends flu.component {
 
     view () {
-        return [
-            "h1>TODO List",
-            "ul.todo_wrap(wrap)",
-            "input[type=text](in)"
-        ]
+        return {{
+            h1>TODO List
+            ul.todo_wrap(wrap)
+            input[type=text](in)
+        }}
     }
 
     supply() {
-        return [
-            "li.todo_item(item)"
-        ]
+        return {{
+            li.todo_item(item)
+        }}
     }
 
     controller() {
@@ -27,8 +27,6 @@ class Todo extends flu.component {
                 el.inner(val.get());
                 val.set("");
                 i++;
-
-                console.log(this.fluSupply);
             }
         });
     }
