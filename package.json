@@ -1,6 +1,6 @@
 {
-  "name": "flu_framework",
-  "version": "0.0.7",
+  "name": "FluJS_framework",
+  "version": "0.1.1",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-browser-sync": "^2.2.0",

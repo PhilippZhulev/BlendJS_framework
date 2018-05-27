@@ -1,4 +1,4 @@
-# flu.framework 0.0.7
+# FluJS_framework 0.1.1 
 #### A Simple Component
 
 ###### HTML
