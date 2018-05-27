@@ -57,5 +57,5 @@ class InputOutput extends flu.component {
 flu.class(InputOutput).render(".app");
 ```
 
-[DEMO](https://philippzhulev.github.io/flu/)
+[DEMO](https://philippzhulev.github.io/FluJS_framework/)
 
