@@ -4,7 +4,7 @@
         (supply.childElement || supply).forEach(function (item, inc) {
 
 
-            if(item.BlendName === prop || prop === null) {
+            if(item.blendName === prop || prop === null) {
                 if(fn !== undefined) {
                     fn(item);
                 }

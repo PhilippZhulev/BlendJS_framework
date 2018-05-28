@@ -1,4 +1,4 @@
-class InputOutput extends blend.component {
+class InputOutput extends flu.component {
     model () {
         this.title = "Hello";
         this.name = " Nick";
@@ -10,7 +10,7 @@ class InputOutput extends blend.component {
         }}
     }
     controller(data) {
-        const reg = blend.reg(this);
+        const reg = flu.reg(this);
 
         reg.onEvent("btn").click({
             run: function () {
@@ -23,4 +23,4 @@ class InputOutput extends blend.component {
     }
 }
 
-blend.class(InputOutput).render(".app");
+flu.class(InputOutput).render(".app");

@@ -16,7 +16,7 @@
                     attr = 0,
                     content = 0;
 
-                let BlendId = createBlendId();
+                let blendId = createBlendId();
 
                 let classLength = 0;
 
@@ -75,16 +75,26 @@
                     spacesLen = 0;
                 }
 
+                let indexVal = 1;
+
+                b.forEach(function (item, inc) {
+                    if(item.blendName === ref) {
+                        ref = ref.replace("_" + (indexVal - 1), "") + "_" + indexVal;
+                        indexVal++;
+                        console.log(item.blendName);
+                    }
+                });
+
                 proto_model.push({
-                    BlendName: ref,
+                    blendName: ref,
                     id: id,
-                    Blend_id: BlendId,
+                    blend_id: blendId,
                     childElement: [],
                     spacesLength: spacesLen.length || 0,
                     element: el,
                     classes: className,
                     sim: sim,
-                    BlendSupply: arr[i]
+                    blendSupply: arr[i]
                 });
 
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
