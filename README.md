@@ -62,4 +62,4 @@ blend.class(InputOutput).render(".app");
 + The native **JSF** format, will allow you to easily generate dynamic HTML elements and integrate any data into them.
 + **blend.component** stores in itself the elements written by you, and you can freely use them repeatedly in other components.
 
-
+**This is an alpha version of the product and at the moment it is being actively upgraded and improved.**
