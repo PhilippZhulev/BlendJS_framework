@@ -56,9 +56,10 @@ class InputOutput extends blend.component {
 
 blend.class(InputOutput).render(".app");
 ```
+### [DEMO](https://philippzhulev.github.io/BlendJS_framework/)
 
 + BlendJS can be used as a **view** and as a full **MVC framework**.You can write simple, easily modified components that can later be easily transferred to other applications.
 + The native **JSF** format, will allow you to easily generate dynamic HTML elements and integrate any data into them.
 + **blend.component** stores in itself the elements written by you, and you can freely use them repeatedly in other components.
-[DEMO](https://philippzhulev.github.io/BlendJS_framework/)
+
 
