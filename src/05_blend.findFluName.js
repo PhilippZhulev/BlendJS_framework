@@ -1,10 +1,10 @@
-    function findFluName (supply, prop, fn) {
+    function findBlendName (supply, prop, fn) {
 
         let result = 0;
         (supply.childElement || supply).forEach(function (item, inc) {
 
 
-            if(item.fluName === prop || prop === null) {
+            if(item.BlendName === prop || prop === null) {
                 if(fn !== undefined) {
                     fn(item);
                 }
@@ -12,7 +12,7 @@
             }
 
             if(item.childElement !== 0) {
-                findFluName(item, prop, fn);
+                findBlendName(item, prop, fn);
             }
 
         });

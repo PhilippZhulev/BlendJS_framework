@@ -6,19 +6,21 @@ module.exports = function(grunt) {
         concat: {
             my_target_1: { 
                 files: {
-                    'dist/flu.js': ['src/*.js']
+                    'dist/blend.js': ['src/*.js'],
+                    'dist/blendCompile.js': ['src/compile/*.js']
                 }
             }
         },
         uglify: {
             my_target_1: {
                 files: {
-                    'dist/flu.min.js': ['dist/flu.js']
+                    'dist/blend.min.js': ['dist/blend.js'],
+                    'dist/blendCompile.min.js': ['dist/blendCompile.js']
                 }
             }
         },
         watch: {
-            files: ['src/*.js', 'public/*.js'],
+            files: ['src/*.js', 'src/compile/*.js', 'public/*.js', 'public/*.jsf'],
             tasks: ['concat', 'uglify']
         },
         browserSync: {

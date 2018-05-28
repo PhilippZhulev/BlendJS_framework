@@ -1,25 +1,25 @@
-    this.reg = function (fluSupply) {
+    this.reg = function (BlendSupply) {
 
         function addElement(mytype, input, output) {
             let _input = null,
                 _output = [];
 
-            findFluName (fluSupply, input, function (item) {
+            findBlendName (BlendSupply, input, function (item) {
                 _input = item;
             });
 
-            findFluName (fluSupply, output, function (item) {
+            findBlendName (BlendSupply, output, function (item) {
                 _output.push(item);
             });
 
             let elmClone,
-                fluSupplyClone,
+                BlendSupplyClone,
                 childClone;
 
             renderHTML(_output, function (i) {
                 let elm = _output[i].element;
 
-                fluSupplyClone = _output[i].fluSupply;
+                BlendSupplyClone = _output[i].BlendSupply;
                 childClone = _output[i].childElement;
                 elmClone = elm.cloneNode(true);
 
@@ -33,15 +33,15 @@
             return {
                 supplement: function (name) {
                     let block = [],
-                        fsArr = [fluSupplyClone];
+                        fsArr = [BlendSupplyClone];
 
                     for(let i = 0; i < childClone.length; i++) {
-                        fsArr.push(childClone[i].fluSupply);
+                        fsArr.push(childClone[i].BlendSupply);
                     }
 
-                    createfluSupply(fsArr, block);
+                    createBlendSupply(fsArr, block);
 
-                    block[0].fluName = name;
+                    block[0].BlendName = name;
                     block[0].element = elmClone;
 
                     elmClone.childNodes.forEach(function (item, i) {
@@ -50,18 +50,18 @@
                         }
                     });
 
-                    findFluName (fluSupply, input, function (item) {
+                    findBlendName (BlendSupply, input, function (item) {
                         item.childElement.push(block[0]);
                     });
 
                     return {
                         deliver: function () {
-                            block[0].element.setAttribute("data-flu-name", block[0].fluName);
+                            block[0].element.setAttribute("data-Blend-name", block[0].BlendName);
                         },
                         renameChild: function (nm, newName) {
-                            findFluName (block[0].childElement, nm, function (item) {
-                                item.fluName = newName;
-                                item.fluSupply = item.fluSupply.replace("(" + nm + ")","(" +  newName + ")");
+                            findBlendName (block[0].childElement, nm, function (item) {
+                                item.BlendName = newName;
+                                item.BlendSupply = item.BlendSupply.replace("(" + nm + ")","(" +  newName + ")");
                             });
                         },
                         innerBefore: function (text) {
@@ -73,17 +73,17 @@
                         child: function (name) {
                             return {
                                 inner: function (content) {
-                                    findFluName (block[0].childElement, name, function (item) {
+                                    findBlendName (block[0].childElement, name, function (item) {
                                         item.element.innerHTML = content;
                                     });
                                 },
                                 innerAfter: function (content) {
-                                    findFluName (block[0].childElement, name, function (item) {
+                                    findBlendName (block[0].childElement, name, function (item) {
                                         item.element.append(content);
                                     });
                                 },
                                 innerBefore: function (content) {
-                                    findFluName (block[0].childElement, name, function (item) {
+                                    findBlendName (block[0].childElement, name, function (item) {
                                         item.element.prepend(content);
                                     });
                                 }
@@ -107,17 +107,17 @@
         }
         function getEvent(target, prop, func) {
             let bef = null;
-            document.addEventListener("flu.update", function () {
+            document.addEventListener("Blend.update", function () {
                 if(prop.before !== undefined) {
-                    bef = prop.before.call(_this_.reg(fluSupply));
+                    bef = prop.before.call(_this_.reg(BlendSupply));
                 }
                 if(typeof target === "string") {
-                    findFluName (fluSupply, target, function(item) {
+                    findBlendName (BlendSupply, target, function(item) {
                         return func(item, bef);
                     });
                 }else if(Array.isArray(target)) {
                     for(let i = 0; i < target.length; i++) {
-                        findFluName (fluSupply, target[i], function(item) {
+                        findBlendName (BlendSupply, target[i], function(item) {
                             return func(item, i);
                         });
                     }
@@ -127,16 +127,16 @@
             _this_.update();
         }
         function eventProp (prop, i) {
-            prop.run.call(_this_.reg(fluSupply), i);
+            prop.run.call(_this_.reg(BlendSupply), i);
             if(prop.update === true) {
                 _this_.update();
             }
         }
 
         return {
-            it: function(fluName) {
+            it: function(BlendName) {
                 let _input = null;
-                findFluName (fluSupply, fluName, function (item) {
+                findBlendName (BlendSupply, BlendName, function (item) {
                     _input = item;
                 });
 
@@ -144,7 +144,7 @@
                     childIndex : function (name) {
                         let index;
                         for(let i = 0; i <  _input.childElement.length; i++) {
-                            if(_input.childElement[i].fluName === name) {
+                            if(_input.childElement[i].BlendName === name) {
                                 index = i
                             }
                         }
@@ -171,10 +171,10 @@
                     innerBefore: function (content) {
                         _input.element.prepend(content);
                     },
-                    redraw: function (fluHtml) {
+                    redraw: function (BlendHtml) {
                         let block = [];
 
-                        createfluSupply(fluHtml, block);
+                        createBlendSupply(BlendHtml, block);
 
                         renderHTML(block, function (i) {
                             _input.element.replaceWith(block[i].element);
@@ -187,11 +187,11 @@
                 let _input = null,
                     _output = [];
 
-                findFluName (fluSupply, input, function (item) {
+                findBlendName (BlendSupply, input, function (item) {
                     _input = item;
                 });
 
-                findFluName (fluSupply, output, function (item) {
+                findBlendName (BlendSupply, output, function (item) {
                     _output = item;
                 });
 
@@ -204,8 +204,8 @@
                 return addElement("create", input, output);
             },
             rename: function (input, newName) {
-                findFluName (fluSupply, input, function (item) {
-                    item.fluName = newName;
+                findBlendName (BlendSupply, input, function (item) {
+                    item.BlendName = newName;
                 });
             },
             onEvent: function (target) {
@@ -243,7 +243,7 @@
             remove: function (input) {
                 let _input = null;
 
-                findFluName (fluSupply, input, function (item) {
+                findBlendName (BlendSupply, input, function (item) {
                     _input = item;
                 });
 
@@ -251,7 +251,7 @@
             },
             value: function (input) {
                 let _input = null;
-                findFluName (fluSupply, input, function (item) {
+                findBlendName (BlendSupply, input, function (item) {
                     _input = item;
                 });
                 return {
@@ -266,11 +266,11 @@
             build: function (arr) {
                 let result = [];
                 let target = element;
-                createfluSupply(arr, result);
+                createBlendSupply(arr, result);
 
                 return {
                     to: function (name) {
-                        findFluName (fluSupply, name, function (item) {
+                        findBlendName (BlendSupply, name, function (item) {
                             target = item;
                         });
                     },
@@ -291,6 +291,6 @@
                     },
                 }
             },
-            fluSupply: fluSupply
+            BlendSupply: BlendSupply
         }
     };

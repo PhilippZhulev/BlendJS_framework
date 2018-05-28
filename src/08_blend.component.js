@@ -9,7 +9,7 @@
         }
 
         if(_this.view !== undefined) {
-            createfluSupply(_this.view.call(_modelObj, _modelObj), _view);
+            createBlendSupply(_this.view.call(_modelObj, _modelObj), _view);
         }
 
         return {
@@ -21,30 +21,30 @@
                 });
 
                 if(_this.supply !== undefined) {
-                    createfluSupply(_this.supply.call(_modelObj), fluSupply);
+                    createBlendSupply(_this.supply.call(_modelObj), BlendSupply);
                 }
 
-                fluSupply = fluSupply.concat(_view);
+                BlendSupply = BlendSupply.concat(_view);
 
                 if(_this.controller !== undefined) {
-                    _this.controller.call(fluSupply, _modelObj);
+                    _this.controller.call(BlendSupply, _modelObj);
                 }
 
                 if(_this.onEvent !== undefined) {
-                    _this.event.call(fluSupply);
+                    _this.event.call(BlendSupply);
                 }
 
-                _this.fluSupply = fluSupply;
+                _this.BlendSupply = BlendSupply;
 
-                return fluSupply;
+                return BlendSupply;
             },
             inheritance : function () {
-                return fluSupply;
+                return BlendSupply;
             },
             clear: function () {
-                fluSupply = [];
-                _this.fluSupply = [];
-                return _this.fluSupply;
+                BlendSupply = [];
+                _this.BlendSupply = [];
+                return _this.BlendSupply;
             }
         }
     };

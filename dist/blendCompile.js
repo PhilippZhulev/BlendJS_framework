@@ -1,11 +1,11 @@
-function FluCompile() {
+function BlendCompile() {
 
     this.include = function () {
         let el = document.getElementsByTagName("script");
         let result = [];
         for(let i = 0; i < el.length; i++) {
 
-            if(el[i].getAttribute("type") === "text/flujs") {
+            if(el[i].getAttribute("type") === "text/blendjs") {
                 let url = el[i].getAttribute("src");
 
                 let req = new XMLHttpRequest();
@@ -42,15 +42,15 @@ function FluCompile() {
                         if(strings[inr].length !== 0) {
                             let sim = strings[inr].match(/[+*?$^(\(\).#\[\])>]/g);
                             if(sim !== null) {
-                               if(inr === 1) {
-                                   spaces = strings[1].split(sim[0])[0].match(/ /g).length
-                               }
-                               htmlResult += '"' + strings[inr].slice(spaces) + '"';
-                               htmlResult = htmlResult.replace('{', '"+');
-                               htmlResult = htmlResult.replace('}', '+"');
-                               if(inr !== strings.length - 2) {
-                                   htmlResult += ",\n";
-                               }
+                                if(inr === 1) {
+                                    spaces = strings[1].split(sim[0])[0].match(/ /g).length
+                                }
+                                htmlResult += '"' + strings[inr].slice(spaces) + '"';
+                                htmlResult = htmlResult.replace('{', '"+');
+                                htmlResult = htmlResult.replace('}', '+"');
+                                if(inr !== strings.length - 2) {
+                                    htmlResult += ",\n";
+                                }
                             }
                         }
                     }
@@ -63,6 +63,6 @@ function FluCompile() {
 }
 
 window.onload = function () {
-    let complie = new FluCompile();
+    let complie = new BlendCompile();
     complie.generateScript(complie.include());
 }

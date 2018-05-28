@@ -1,4 +1,4 @@
-    function createfluSupply(arr, b) {
+    function createBlendSupply(arr, b) {
 
         let proto_model = [];
 
@@ -16,7 +16,7 @@
                     attr = 0,
                     content = 0;
 
-                let fluId = createFluId();
+                let BlendId = createBlendId();
 
                 let classLength = 0;
 
@@ -76,15 +76,15 @@
                 }
 
                 proto_model.push({
-                    fluName: ref,
+                    BlendName: ref,
                     id: id,
-                    flu_id: fluId,
+                    Blend_id: BlendId,
                     childElement: [],
                     spacesLength: spacesLen.length || 0,
                     element: el,
                     classes: className,
                     sim: sim,
-                    fluSupply: arr[i]
+                    BlendSupply: arr[i]
                 });
 
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
