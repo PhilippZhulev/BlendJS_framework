@@ -110,12 +110,20 @@
                 }
                 if(typeof target === "string") {
                     findBlendName (BlendSupply, target, function(item) {
-                        return func(item, bef);
+                        return func(item, {
+                            before: bef,
+                            index: 0,
+                            target: target
+                        });
                     });
                 }else if(Array.isArray(target)) {
                     for(let i = 0; i < target.length; i++) {
                         findBlendName (BlendSupply, target[i], function(item) {
-                            return func(item, i);
+                            return func(item, {
+                                before: bef,
+                                index: i,
+                                target: target[i]
+                            });
                         });
                     }
                 }
@@ -123,16 +131,24 @@
 
             _this_.update();
         }
-        function eventProp (prop, i) {
-            prop.run.call(_this_.reg(BlendSupply), i);
+        function eventProp (prop, e) {
+            prop.run.call(_this_.reg(BlendSupply), e);
             if(prop.update === true) {
                 _this_.update();
             }
         }
+        function search(s, stype) {
+            let result = undefined;
+            findBlendName (BlendSupply, s, function (item) {
+                result = item;
+            }, stype);
+
+            return result;
+        }
 
         return {
             it: function(BlendName) {
-                let _input = null;
+                let _input = [];
 
                 findBlendName (BlendSupply, BlendName, function (item) {
                     _input = item;
@@ -176,15 +192,12 @@
                         _input.element.replaceWith(_output.element);
                     },
                     childIndex : function (name) {
-
                         let index;
-
                         for(let i = 0; i <  _input.childElement.length; i++) {
                             if(_input.childElement[i].blendName === name) {
                                 index = i
                             }
                         }
-
                         return i;
                     },
                     childLength : function () {
@@ -215,8 +228,30 @@
                         renderHTML(block, function (i) {
                             _input.element.replaceWith(block[i].element);
                         });
+                    },
+                    item: _input,
+                    element: _input.element
+                }
+            },
+            each: function (func) {
+                function supplyEach(bs) {
+                    for(let i = 0; i < bs.length; i++) {
+                        func(bs[i], i);
+                        if(bs[i].childElement !== 0) {
+                            supplyEach(bs[i].childElement);
+                        }
                     }
                 }
+                supplyEach(BlendSupply);
+            },
+            searchId: function (id) {
+                return search(id, "id");
+            },
+            searchClass: function (className) {
+                return search(className, "class");
+            },
+            searchBlendId: function (id) {
+                return search(id, "blendId");
             },
             build: function (arr) {
                 createBlendSupply(arr, BlendSupply);
@@ -224,30 +259,30 @@
             onEvent: function (target) {
                 return {
                     click: function (prop) {
-                        return getEvent(target, prop, function (item, i) {
+                        return getEvent(target, prop, function (item, e) {
                             item.element.onclick = function () {
-                                eventProp(prop, i);
+                                eventProp(prop, e);
                             };
                         });
                     },
                     keyup: function (prop) {
-                        return getEvent(target, prop, function (item, i) {
+                        return getEvent(target, prop, function (item, e) {
                             item.element.onkeyup = function () {
-                                eventProp(prop, i);
+                                eventProp(prop, e);
                             };
                         });
                     },
                     change: function (prop) {
-                        return getEvent(target, prop, function (item, i) {
+                        return getEvent(target, prop, function (item, e) {
                             item.element.onchange = function () {
-                                eventProp(prop, i);
+                                eventProp(prop, e);
                             };
                         });
                     },
                     keydown: function (prop) {
-                        return getEvent(target, prop, function (item, i) {
+                        return getEvent(target, prop, function (item, e) {
                             item.element.onkeydown = function () {
-                                eventProp(prop, i);
+                                eventProp(prop, e);
                             };
                         });
                     }

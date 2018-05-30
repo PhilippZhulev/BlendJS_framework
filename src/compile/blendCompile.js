@@ -36,16 +36,20 @@ function BlendCompile() {
                 if(inc !== 0) {
                     let result = elmsOrigin[inc].split("}}")[0],
                         pattern = /\r\n|\r|\n/g,
-                        strings = result.split(pattern);
+                        strings = result.split(pattern),
+                        comment = "";
 
                     for(let inr = 0; inr < strings.length; inr++) {
+                        if(strings[inr].match(/"((?:\\"|[^"])*)"|'((?:\\'|[^'])*)'|(\/\/.*|\/\*[\s\S]*?\*\/)/g) !== null) {
+                            comment = "\n //";
+                        }
                         if(strings[inr].length !== 0) {
                             let sim = strings[inr].match(/[+*?$^(\(\).#\[\])>]/g);
                             if(sim !== null) {
                                 if(inr === 1) {
                                     spaces = strings[1].split(sim[0])[0].match(/ /g).length
                                 }
-                                htmlResult += '"' + strings[inr].slice(spaces) + '"';
+                                htmlResult += comment + '"' + strings[inr].slice(spaces) + '"';
                                 htmlResult = htmlResult.replace('{', '"+');
                                 htmlResult = htmlResult.replace('}', '+"');
                                 if(inr !== strings.length - 2) {
@@ -57,6 +61,7 @@ function BlendCompile() {
                     ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
             }
+            console.log(ready);
             eval(ready);
         }
     }
