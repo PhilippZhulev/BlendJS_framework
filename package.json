@@ -1,6 +1,22 @@
 {
-  "name": "FluJS_framework",
+  "name": "BlendJS_framework",
+  "description": "JavaScript open source library for building user interfaces.",
   "version": "0.1.1",
+  "author": {
+    "name": "Philipp Zhulev",
+    "email": "Filippja@gmail.com"
+  },
+  "license": "MIT License (MIT)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PhilippZhulev/BlendJS_framework"
+  },
+  "keywords": [
+    "frontend",
+    "library",
+    "ui",
+    "javascript"
+  ],
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-browser-sync": "^2.2.0",
