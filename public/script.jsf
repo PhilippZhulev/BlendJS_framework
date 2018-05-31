@@ -12,13 +12,15 @@ class InputOutput extends blend.component {
     controller(data) {
         const reg = blend.reg(this);
 
-        reg.onEvent(["btn", "hello"]).click({
-            run: function (e) {
-                this.it("hello").redraw({{
-                    p>
-                        b.ready>{data.title + data.name}
-                }});
-            }
+        function setName () {
+            this.it("hello").redraw({{
+                p>
+                    b.ready>{data.title + data.name}
+            }});
+        }
+
+        reg.onEvent("btn").click({
+            run: setName
         });
     }
 }

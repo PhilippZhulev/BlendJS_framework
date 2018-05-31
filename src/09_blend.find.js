@@ -1,5 +1,4 @@
     this.reg = function (BlendSupply) {
-
         function addElement(mytype, input, output) {
             let _output = [];
 
@@ -48,6 +47,13 @@
                     });
 
                     findBlendName (BlendSupply, input.blendName, function (item) {
+                        let clones = 0;
+                        for(let ind = 0; ind < item.childElement.length; ind++) {
+                            if(item.childElement[ind].blendName.indexOf(name) !== -1) {
+                                block[0].blendName = name + "_" + clones++;
+                            }
+                        }
+
                         item.childElement.push(block[0]);
                     });
 
@@ -86,7 +92,7 @@
                                 }
                             }
                         },
-                        attr : function (key, val) {
+                        attr: function (key, val) {
                             block[0].element.setAttribute(key, val);
                         },
                         addClass: function (className) {
@@ -148,7 +154,7 @@
 
         return {
             it: function(BlendName) {
-                let _input = [];
+                let _input = null;
 
                 findBlendName (BlendSupply, BlendName, function (item) {
                     _input = item;
