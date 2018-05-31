@@ -26,16 +26,19 @@ JavaScript open source library for building user interfaces.
 ###### JSF
 ```javascript
 class InputOutput extends blend.component {
+    
     model () {
         this.title = "Hello";
         this.name = " Nick";
     }
+    
     view () {
         return {{
             p(hello)>{this.title}
             button.my_btn(btn)>Click!
         }}
     }
+    
     controller(data) {
         const reg = blend.reg(this);
 
@@ -50,6 +53,7 @@ class InputOutput extends blend.component {
             run: setName
         });
     }
+    
 }
 
 blend.class(InputOutput).render(".app");
