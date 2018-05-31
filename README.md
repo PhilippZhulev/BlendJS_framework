@@ -52,7 +52,7 @@ class InputOutput extends blend.component {
     }
 }
 
-blend.class(InputOutput).render(".app");s
+blend.class(InputOutput).render(".app");
 ```
 ### [DEMO](https://philippzhulev.github.io/BlendJS_framework/)
 
