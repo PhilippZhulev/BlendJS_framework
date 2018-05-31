@@ -151,7 +151,7 @@ class Hello extends blend.component {
         return {{
             div.block#block_1[data-target=block_1]
                 h1.title(in)>{this.hello + this.name}!
-                    button(btn)>Refactor!
+                button(btn)>Refactor!
         }}
     }
 
