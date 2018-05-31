@@ -100,7 +100,7 @@ will be:
 ```
 In "**jsf**" the syntax for generating html is written in double braces "**{{...}}**", and tabs and spaces are used to indicate inheritance. In general, the markup is similar to the syntax of the **jade** template engine.
 
-The reverse function **view ()** will immediately render the html on the page and store the items in **blend.component**.
+The reverse function "**view ()**" will immediately render the html on the page and store the items in **blend.component**.
 
 The blend component is written in a class that inherits methods and functions from the blend.component,
 and later it is called like this:
