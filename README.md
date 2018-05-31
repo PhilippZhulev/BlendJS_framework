@@ -1,4 +1,6 @@
 # BlendJS_framework 0.1.1 
+[![BlendJS](/PhilippZhulev/BlendJS_framework/archive/0.1.1.zip)](https://img.shields.io/badge/blendJS-alpha-green.svg)
+
 
 JavaScript open source library for building user interfaces.
 
