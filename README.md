@@ -64,4 +64,155 @@ blend.class(InputOutput).render(".app");
 + The native **JSF** format, will allow you to easily generate dynamic HTML elements and integrate any data into them.
 + **blend.component** stores in itself the elements written by you, and you can freely use them repeatedly in other components.
 
+### Get started
+Write "Hello world" application.
+###### JSF
+```javascript
+class Hello extends blend.component {
+    view () {
+        return {{
+            div.block#block_1[data-target=block_1]
+                h1.title>Hello world!
+        }}
+    }
+}
+
+blend.class(Hello).render(".app");
+```
+The page will display "**Hello world!**", and in html there will be such result:
+
+###### HTML
+```html
+<div class="app">
+    <div class="block" id="block_1" data-target="block_1">
+        <h1 class="title">Hello world!</h1>
+    </div>
+</div>
+```
+
+From this it follows that the record:
+```javascript
+h1.title>Hello world!
+```
+will be:
+```html
+<h1 class="title">Hello world!</h1>
+```
+In "**jsf**" the syntax for generating html is written in double braces "**{{...}}**", and tabs and spaces are used to indicate inheritance. In general, the markup is similar to the syntax of the **jade** template engine.
+
+The reverce function **view ()** will immediately render the html on the page and store the items in **blend.component**.
+
+The blend component is written in a class that inherits methods and functions from the blend.component,
+and later it is called like this:
+```javascript
+blend.class(Hello).render(".app");
+```
+method "**.render (".app")**" tells which element to render the result.
+
+Now we want to add data to our application:
+###### JSF
+```javascript
+class Hello extends blend.component {
+
+    model () {
+        this.hello = "Hello";
+        this.name = " Nick";
+    }
+
+    view () {
+        return {{
+            div.block#block_1[data-target=block_1]
+                h1.title>{this.hello + this.name}!
+        }}
+    }
+}
+
+blend.class(Hello).render(".app");
+```
+Result: **Hello Nick!**
+
+The reverse function "model ()" is used exclusively for data processing, its context this is the object in which you can write the results,
+"**view ()**" and "**supply ()**" accept the **model** object as context  "**this**", "controller ()" as the **first argument**.
+
+Curly brackets "**{..}**" in "jsf" allow inserting elements of the js-code into an html structure.
+
+Now add the controller
+###### JSF
+```javascript
+class Hello extends blend.component {
+
+    model () {
+        this.hello = "Hello";
+        this.name = " Nick";
+        this.click = "Click!"
+    }
+
+    view () {
+        return {{
+            div.block#block_1[data-target=block_1]
+                h1.title(in)>{this.hello + this.name}!
+                    button(btn)>Refactor!
+        }}
+    }
+
+    controller(data) {
+        const reg = blend.reg(this);
+
+        reg.build({{
+            h2.me_click(out)>{data.click}
+        }});
+
+        function clickRefactor () {
+            this.it("in").refactor("out");
+        }
+
+        reg.onEvent("btn").click({
+            run: clickRefactor
+        });
+    }
+}
+
+blend.class(Hello).render(".app");
+```
+As a result, when you click on the "Refactor" button, "Hello Nick!" Will be replaced with "Click!".
+
+You probably noticed the parentheses in the structure.
+```javascript
+h2.me_click(out)>
+```
+They specify blendName, this is the unique name of the element by which blend looks for the elements.
+```javascript
+this.it("in").refactor("out");
+```
+Here we find the element **(in)** and replace it with the element **(out)**.
+```javascript
+const reg = blend.reg(this);
+```
+"**blend.reg (this)**" binds a set of elements for convenience is stored in a constant.
+"**this**" in controller is the base of the elements of the class.
+```javascript
+reg.onEvent("btn").click({
+    run: clickRefactor
+});
+```
+Bind an event to an element by "**blendName**". Can work with an array of names.
+```javascript
+reg.onEvent(["btn1", "btn2"]).click({
+    run: function(e) {
+      console.log(e.index);
+    }
+});
+```
+In addition to the "**run**" property that triggers the function at the event, there are also the "**update: true**" properties - updates the events in the controller, and "**before: func ()**" performs the function when the event is initialized.
+
+The method "**reg.build**" allows you to create an element and add it to the database, without drawing it on the page.
+```javascript
+reg.build({{
+    h2.me_click(out)>{data.click}
+}});
+```
+
+**Readme is supplemented...**
+
 **This is an alpha version of the product and at the moment it is being actively upgraded and improved.**
+

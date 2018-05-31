@@ -61,7 +61,6 @@ function BlendCompile() {
                     ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
             }
-            console.log(ready);
             eval(ready);
         }
     }

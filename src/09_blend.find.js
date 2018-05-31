@@ -236,7 +236,7 @@
                         });
                     },
                     item: _input,
-                    element: _input.element
+                    el: _input.element
                 }
             },
             each: function (func) {
