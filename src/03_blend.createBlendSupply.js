@@ -78,10 +78,9 @@
                 let indexVal = 1;
 
                 b.forEach(function (item, inc) {
-                    if(item.blendName === ref) {
+                    if(item.blendName === ref && ref !== 0) {
                         ref = ref.replace("_" + (indexVal - 1), "") + "_" + indexVal;
                         indexVal++;
-                        console.log(item.blendName);
                     }
                 });
 

@@ -291,7 +291,12 @@
                                 eventProp(prop, e);
                             };
                         });
-                    }
+                    },
+                    now: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            eventProp(prop, e);
+                        });
+                    },
                 }
             },
             blendSupply: BlendSupply

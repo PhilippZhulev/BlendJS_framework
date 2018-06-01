@@ -97,10 +97,9 @@ function Blend () {
                 let indexVal = 1;
 
                 b.forEach(function (item, inc) {
-                    if(item.blendName === ref) {
+                    if(item.blendName === ref && ref !== 0) {
                         ref = ref.replace("_" + (indexVal - 1), "") + "_" + indexVal;
                         indexVal++;
-                        console.log(item.blendName);
                     }
                 });
 
@@ -551,7 +550,12 @@ function Blend () {
                                 eventProp(prop, e);
                             };
                         });
-                    }
+                    },
+                    now: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            eventProp(prop, e);
+                        });
+                    },
                 }
             },
             blendSupply: BlendSupply
