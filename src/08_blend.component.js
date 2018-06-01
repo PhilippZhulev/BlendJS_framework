@@ -1,8 +1,7 @@
     this.component = function () {
 
         let _this = this,
-            _view = [],
-            _modelObj = {};
+            _view = [];
 
         if(_this.model !== undefined) {
             _this.model.call(_modelObj);

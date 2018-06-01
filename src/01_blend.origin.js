@@ -10,5 +10,6 @@ function Blend () {
 
     let BlendSupply = [],
         element,
+        _modelObj = {},
         _dump_ = [];
 
