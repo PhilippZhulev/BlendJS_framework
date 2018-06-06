@@ -4,7 +4,7 @@
 
 function Blend () {
 
-    this.version = '0.0.8';
+    this.version = '0.1.5';
 
     const _this_ = this;
 
@@ -12,4 +12,3 @@ function Blend () {
         element,
         _modelObj = {},
         _dump_ = [];
-

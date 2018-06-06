@@ -4,7 +4,7 @@
 
 function Blend () {
 
-    this.version = '0.0.8';
+    this.version = '0.1.5';
 
     const _this_ = this;
 
@@ -12,7 +12,6 @@ function Blend () {
         element,
         _modelObj = {},
         _dump_ = [];
-
 
     function createBlendId () {
         return "Blend_" + String(Math.floor(Math.random() * 1000)).substring(0, 5) + "_elm" + String(Math.floor(Math.random() * 2000)).substring(0, 5);
@@ -435,10 +434,19 @@ function Blend () {
 
                 return {
                     draw : function (prop) {
-                        for(let i = 0; i < prop.els.length; i++) {
+                        if(prop.data === undefined) {
+                            prop.data = [0];
+                        }
+                        for(let i = 0; i < prop.data.length; i++) {
                             let block = [];
 
-                            createBlendSupply(prop.set(prop.els[i], i), block);
+                            if(prop.before !== undefined) {
+                                prop.before(prop.data[i], i);
+                            }
+                            createBlendSupply(prop.render(prop.data[i], i), block);
+                            if(prop.after !== undefined) {
+                                prop.after(prop.data[i], i);
+                            }
 
                             renderHTML(block, function (inc) {
                                 _input.element.append(block[inc].element);
@@ -544,7 +552,19 @@ function Blend () {
                 return search(id, "blendId");
             },
             build: function (arr) {
-                createBlendSupply(arr, BlendSupply);
+                if(prop.data === undefined) {
+                    prop.data = [0];
+                }
+                for(let i = 0; i < prop.data.length; i++) {
+                    let block = [];
+                    if(prop.before !== undefined) {
+                        prop.before(prop.data[i], i);
+                    }
+                    createBlendSupply(prop.render(prop.data[i], i), BlendSupply);
+                    if(prop.after !== undefined) {
+                        prop.after(prop.data[i], i);
+                    }
+                }
             },
             onEvent: function (target) {
                 return {

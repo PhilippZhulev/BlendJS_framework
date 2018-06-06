@@ -169,10 +169,19 @@
 
                 return {
                     draw : function (prop) {
-                        for(let i = 0; i < prop.els.length; i++) {
+                        if(prop.data === undefined) {
+                            prop.data = [0];
+                        }
+                        for(let i = 0; i < prop.data.length; i++) {
                             let block = [];
 
-                            createBlendSupply(prop.set(prop.els[i], i), block);
+                            if(prop.before !== undefined) {
+                                prop.before(prop.data[i], i);
+                            }
+                            createBlendSupply(prop.render(prop.data[i], i), block);
+                            if(prop.after !== undefined) {
+                                prop.after(prop.data[i], i);
+                            }
 
                             renderHTML(block, function (inc) {
                                 _input.element.append(block[inc].element);
@@ -278,7 +287,19 @@
                 return search(id, "blendId");
             },
             build: function (arr) {
-                createBlendSupply(arr, BlendSupply);
+                if(prop.data === undefined) {
+                    prop.data = [0];
+                }
+                for(let i = 0; i < prop.data.length; i++) {
+                    let block = [];
+                    if(prop.before !== undefined) {
+                        prop.before(prop.data[i], i);
+                    }
+                    createBlendSupply(prop.render(prop.data[i], i), BlendSupply);
+                    if(prop.after !== undefined) {
+                        prop.after(prop.data[i], i);
+                    }
+                }
             },
             onEvent: function (target) {
                 return {
