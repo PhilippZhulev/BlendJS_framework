@@ -161,9 +161,11 @@ class Hello extends blend.component {
     controller(data) {
         const reg = blend.reg(this);
 
-        reg.build({{
-            h2.my_click(out)>{data.click}
-        }});
+        render: function() {
+            return {{
+                h2.my_click(out)>{data.click}
+            }}
+        }
 
         function clickRefactor () {
             this.it("in").refactor("out");
@@ -210,9 +212,13 @@ In addition to the "**run**" property that triggers the function at the event, t
 
 The method "**reg.build**" allows you to create an element and add it to the database, without drawing it on the page.
 ```javascript
-reg.build({{
-    h2.my_click(out)>{data.click}
-}});
+reg.build({
+    render: function() {
+        return {{
+            h2.my_click(out)>{data.click}
+        }}
+    }
+});
 ```
 
 **Readme is supplemented...**
