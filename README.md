@@ -1,6 +1,6 @@
-# BlendJS 0.1.1 
+# BlendJS 0.1.5
 [![BlendJS](https://img.shields.io/badge/blendJS-alpha-green.svg)](/PhilippZhulev/BlendJS_framework/archive/0.1.1.zip)
-![apm](https://img.shields.io/badge/version-0.1.1-yellowgreen.svg)
+![apm](https://img.shields.io/badge/version-0.1.5-yellowgreen.svg)
 ![apm](https://img.shields.io/apm/l/vim-mode.svg)
 
 
@@ -16,7 +16,7 @@ JavaScript open source library for building user interfaces.
         <meta charset="UTF-8">
         <title>blendJs</title>
         <link rel="stylesheet" href="public/style.css">
-    </head>
+    </head> 
     <body>
 
         <div class="app"></div>
@@ -30,19 +30,19 @@ JavaScript open source library for building user interfaces.
 ###### JSF
 ```javascript
 class InputOutput extends blend.component {
-    
+
     model () {
         this.title = "Hello";
         this.name = " Nick";
     }
-    
+
     view () {
         return {{
             p(hello)>{this.title}
             button.my_btn(btn)>Click!
         }}
     }
-    
+
     controller(data) {
         const reg = blend.reg(this);
 
@@ -57,7 +57,7 @@ class InputOutput extends blend.component {
             run: setName
         });
     }
-    
+
 }
 
 blend.class(InputOutput).render(".app");
@@ -219,4 +219,3 @@ reg.build({{
 **Readme is supplemented...**
 
 **This is an alpha version of the product and at the moment it is being actively upgraded and improved.**
-

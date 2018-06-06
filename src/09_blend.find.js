@@ -160,7 +160,25 @@
                     _input = item;
                 });
 
+                if(Array.isArray(BlendName)) {
+                    _input = [];
+                    for(let i = 0; i < BlendName.length; i++) {
+                        _input.push(item);
+                    }
+                }
+
                 return {
+                    draw : function (prop) {
+                        for(let i = 0; i < prop.els.length; i++) {
+                            let block = [];
+
+                            createBlendSupply(prop.set(prop.els[i], i), block);
+
+                            renderHTML(block, function (inc) {
+                                _input.element.append(block[inc].element);
+                            });
+                        }
+                    },
                     rename: function (newName) {
                         findBlendName (BlendSupply, _input, function (item) {
                             item.blendName = newName;

@@ -118,13 +118,13 @@ function Blend () {
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
                     if(proto_model[i].spacesLength > proto_model[i - 1].spacesLength) {
                         proto_model[i - 1].childElement.push(proto_model[i]);
-                        parentMem = proto_model[i - 1];
                     }
-                    if(proto_model[i].spacesLength === proto_model[i - 1].spacesLength && proto_model[i].spacesLength !== 0) {
-                        parentMem.childElement.push(proto_model[i]);
+                    for(let inr = 0; inr < proto_model.length; inr++) {
+                        if(proto_model[i].spacesLength === proto_model[inr].spacesLength && proto_model[i].blend_id !==  proto_model[inr].blend_id  && proto_model[i].spacesLength !== 0) {
+                            proto_model[inr -1].childElement.push(proto_model[i]);
+                        }
                     }
                 }
-
                 proto_model.forEach(function (item, inc) {
                     if(item.spacesLength === 0 && arr.length - 1 === i) {
                         b.push(item);
@@ -139,27 +139,34 @@ function Blend () {
             }
         }
     }
+
+
+
+
     function renderHTML(block, func) {
-        for(let i = 0; i < block.length; i++) {
+        function iterator (array, parent) {
+            let item, index = 0, length = array.length;
 
-            function eachBlendSupply (supply) {
-                supply.childElement.forEach(function (item, inc) {
-                    supply.element.append(item.element);
-                    if(item.childElement !== 0) {
-                        eachBlendSupply(item);
-                    }
-                });
-            }
+            for (; index < length; index++) {
+                    item = array[index];
 
-            if(block[i].childElement.length !== 0) {
-                eachBlendSupply(block[i]);
-            }
+                if(parent !== undefined) {
+                    parent.append(item.element);
+                }
 
-            if(block[i].spacesLength === 0) {
-                func(i);
+                if (item.childElement.length !== 0) {
+                    iterator(item.childElement, item.element);
+                }
+
+                if(array[index].spacesLength === 0) {
+                    func(index);
+                }
             }
         }
+
+        iterator(block);
     }
+
     function findBlendName (supply, prop, fn, type) {
         let searchType,
             result = 0;
@@ -419,7 +426,25 @@ function Blend () {
                     _input = item;
                 });
 
+                if(Array.isArray(BlendName)) {
+                    _input = [];
+                    for(let i = 0; i < BlendName.length; i++) {
+                        _input.push(item);
+                    }
+                }
+
                 return {
+                    draw : function (prop) {
+                        for(let i = 0; i < prop.els.length; i++) {
+                            let block = [];
+
+                            createBlendSupply(prop.set(prop.els[i], i), block);
+
+                            renderHTML(block, function (inc) {
+                                _input.element.append(block[inc].element);
+                            });
+                        }
+                    },
                     rename: function (newName) {
                         findBlendName (BlendSupply, _input, function (item) {
                             item.blendName = newName;

@@ -99,13 +99,13 @@
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
                     if(proto_model[i].spacesLength > proto_model[i - 1].spacesLength) {
                         proto_model[i - 1].childElement.push(proto_model[i]);
-                        parentMem = proto_model[i - 1];
                     }
-                    if(proto_model[i].spacesLength === proto_model[i - 1].spacesLength && proto_model[i].spacesLength !== 0) {
-                        parentMem.childElement.push(proto_model[i]);
+                    for(let inr = 0; inr < proto_model.length; inr++) {
+                        if(proto_model[i].spacesLength === proto_model[inr].spacesLength && proto_model[i].blend_id !==  proto_model[inr].blend_id  && proto_model[i].spacesLength !== 0) {
+                            proto_model[inr -1].childElement.push(proto_model[i]);
+                        }
                     }
                 }
-
                 proto_model.forEach(function (item, inc) {
                     if(item.spacesLength === 0 && arr.length - 1 === i) {
                         b.push(item);
