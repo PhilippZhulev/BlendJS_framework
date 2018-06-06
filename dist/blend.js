@@ -551,7 +551,7 @@ function Blend () {
             searchBlendId: function (id) {
                 return search(id, "blendId");
             },
-            build: function (arr) {
+            build: function (prop) {
                 if(prop.data === undefined) {
                     prop.data = [0];
                 }
