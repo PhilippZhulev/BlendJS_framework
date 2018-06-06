@@ -1,6 +1,5 @@
 # BlendJS 0.1.5
 [![BlendJS](https://img.shields.io/badge/blendJS-alpha-green.svg)](/PhilippZhulev/BlendJS_framework/archive/0.1.1.zip)
-![apm](https://img.shields.io/badge/version-0.1.5-yellowgreen.svg)
 ![apm](https://img.shields.io/apm/l/vim-mode.svg)
 
 
@@ -16,7 +15,7 @@ JavaScript open source library for building user interfaces.
         <meta charset="UTF-8">
         <title>blendJs</title>
         <link rel="stylesheet" href="public/style.css">
-    </head> 
+    </head>
     <body>
 
         <div class="app"></div>
