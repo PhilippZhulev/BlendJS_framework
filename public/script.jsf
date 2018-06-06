@@ -1,28 +1,36 @@
-class InputOutput extends blend.component {
+class Hello extends blend.component {
+
     model () {
-        this.title = "Hello";
+        this.hello = "Hello";
         this.name = " Nick";
+        this.click = "Click!"
     }
+
     view () {
         return {{
-            p(hello)>{this.title}
-            button.my_btn(btn)>Click!
+            div.block#block_1[data-target=block_1]
+                h1.title(in)>{this.hello + this.name}!
+                button(btn)>Refactor!
         }}
     }
+
     controller(data) {
         const reg = blend.reg(this);
 
-        function setName () {
-            this.it("hello").redraw({{
-                p>
-                    b.ready>{data.title + data.name}
-            }});
+        render: function() {
+            return {{
+                h2.my_click(out)>{data.click}
+            }}
+        }
+
+        function clickRefactor () {
+            this.it("in").refactor("out");
         }
 
         reg.onEvent("btn").click({
-            run: setName
+            run: clickRefactor
         });
     }
 }
 
-blend.class(InputOutput).render(".app");
+blend.class(Hello).render(".app");

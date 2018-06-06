@@ -161,11 +161,13 @@ class Hello extends blend.component {
     controller(data) {
         const reg = blend.reg(this);
 
-        render: function() {
-            return {{
-                h2.my_click(out)>{data.click}
-            }}
-        }
+        reg.build({
+            render: function() {
+                return {{
+                    h2.my_click(out)>{data.click}
+                }}
+            }
+        });
 
         function clickRefactor () {
             this.it("in").refactor("out");
