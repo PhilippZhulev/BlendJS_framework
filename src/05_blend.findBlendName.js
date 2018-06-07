@@ -1,3 +1,7 @@
+
+    /*
+    Find the element by "blendName" in "blendSupply". 
+    */
     function findBlendName (supply, prop, fn, type) {
         let searchType,
             result = 0;

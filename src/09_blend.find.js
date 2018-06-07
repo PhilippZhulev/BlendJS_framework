@@ -1,4 +1,10 @@
+    /*
+    controller methods
+    */
     this.reg = function (BlendSupply) {
+
+        //add ellements function.
+        //for the methods "append, prepend, create"
         function addElement(mytype, input, output) {
             let _output = [];
 
@@ -27,6 +33,7 @@
             });
 
             return {
+                //register in "blendSupply" with a new name
                 supplement: function (name) {
                     let block = [],
                         fsArr = [BlendSupplyClone];
@@ -58,21 +65,26 @@
                     });
 
                     return {
+                        //Save name in attribute
                         deliver: function () {
                             block[0].element.setAttribute("data-blend-name", block[0].blendName);
                         },
+                        //rename children element
                         renameChild: function (nm, newName) {
                             findBlendName (block[0].childElement, nm, function (item) {
                                 item.blendName = newName;
                                 item.blendSupply = item.blendSupply.replace("(" + nm + ")","(" +  newName + ")");
                             });
                         },
+                        //rename children element
                         innerBefore: function (text) {
                             block[0].element.prepend(text);
                         },
+                        //insert content after
                         innerAfter: function (text) {
                             block[0].element.append(text);
                         },
+                        //insert content for children
                         child: function (name) {
                             return {
                                 inner: function (content) {
@@ -92,15 +104,24 @@
                                 }
                             }
                         },
-                        attr: function (key, val) {
-                            block[0].element.setAttribute(key, val);
+                        //Attribute
+                        attr: {
+                            set : function (name, value) {
+                                block[0].element.setAttribute(name, value);
+                            },
+                            get : function (name) {
+                                return block[0].element.getAttribute(name);
+                            }
                         },
+                        //Add css class
                         addClass: function (className) {
                             block[0].element.classList.add(className);
                         },
+                        //remove css class
                         removeClass: function (className) {
                             block[0].element.classList.remove(className);
                         },
+                        //insert content
                         inner: function (content) {
                             block[0].element.innerHTML = content;
                         },
@@ -108,6 +129,7 @@
                 }
             }
         }
+        //Event handling function
         function getEvent(target, prop, func) {
             let bef = null;
             document.addEventListener("Blend.update", function () {
@@ -137,12 +159,16 @@
 
             _this_.update();
         }
+
+        //Event handling function lvl2
         function eventProp (prop, e) {
             prop.run.call(_this_.reg(BlendSupply), e);
             if(prop.update === true) {
                 _this_.update();
             }
         }
+
+        //search
         function search(s, stype) {
             let result = undefined;
             findBlendName (BlendSupply, s, function (item) {
@@ -153,6 +179,7 @@
         }
 
         return {
+            //Filter by name
             it: function(BlendName) {
                 let _input = null;
 
@@ -168,6 +195,7 @@
                 }
 
                 return {
+                    //draw an element
                     draw : function (prop) {
                         if(prop.data === undefined) {
                             prop.data = [0];
@@ -188,12 +216,14 @@
                             });
                         }
                     },
+                    //rename element
                     rename: function (newName) {
                         findBlendName (BlendSupply, _input, function (item) {
                             item.blendName = newName;
                             item.blendSupply = item.blendSupply.replace("(" + _input + ")","(" +  newName + ")");
                         });
                     },
+                    //get the value of the field
                     value: {
                         get: function () {
                             return _input.element.value;
@@ -202,18 +232,23 @@
                             return _input.element.value = val;
                         }
                     },
+                    //remove element in html
                     remove: function () {
                         _input.element.remove();
                     },
+                    //create element
                     create: function (output) {
                         return addElement("create", _input, output);
                     },
+                    //create element after
                     append: function (output) {
                         return addElement("append", _input, output);
                     },
+                    //create element before
                     prepend: function (output) {
                         return addElement("prepend", _input, output);
                     },
+                    //replace element
                     refactor: function (output) {
 
                         let _output = [];
@@ -224,6 +259,7 @@
 
                         _input.element.replaceWith(_output.element);
                     },
+                    //get element index
                     childIndex : function (name) {
                         let index;
                         for(let i = 0; i <  _input.childElement.length; i++) {
@@ -233,9 +269,11 @@
                         }
                         return i;
                     },
+                    //get amount of elements
                     childLength : function () {
                         return _input.childElement.length;
                     },
+                    //get, set attribute 
                     attr: {
                         set : function (name, value) {
                             _input.element.setAttribute(name, value);
@@ -244,15 +282,19 @@
                             return _input.element.getAttribute(name);
                         }
                     },
+                    //insert content
                     inner: function (content) {
                         _input.element.innerHTML = content;
                     },
+                    //insert content after
                     innerAfter: function (content) {
                         _input.element.append(content);
                     },
+                    //insert content before
                     innerBefore: function (content) {
                         _input.element.prepend(content);
                     },
+                    //redraw element in html
                     redraw: function (BlendHtml) {
                         let block = [];
 
@@ -266,6 +308,7 @@
                     el: _input.element
                 }
             },
+            //each function
             each: function (func) {
                 function supplyEach(bs) {
                     for(let i = 0; i < bs.length; i++) {
@@ -277,15 +320,19 @@
                 }
                 supplyEach(BlendSupply);
             },
+            //get id
             searchId: function (id) {
                 return search(id, "id");
             },
+            //get className
             searchClass: function (className) {
                 return search(className, "class");
             },
+            //get element id
             searchBlendId: function (id) {
                 return search(id, "blendId");
             },
+            //create elements in "blendSupply"
             build: function (prop) {
                 if(prop.data === undefined) {
                     prop.data = [0];
@@ -301,6 +348,7 @@
                     }
                 }
             },
+            //events
             onEvent: function (target) {
                 return {
                     click: function (prop) {

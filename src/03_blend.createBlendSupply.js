@@ -1,3 +1,7 @@
+
+    /*
+    Generate "blendSupply" objects from an array of strings 
+    */
     function createBlendSupply(arr, b) {
 
         let proto_model = [];

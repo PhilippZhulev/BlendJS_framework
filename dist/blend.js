@@ -1,8 +1,14 @@
 /*
-* Copyright (c) 2018, Philipp Zhulev.
+* Copyright (c) 2018, Philipp Zhulev. 
 */
 
 function Blend () {
+
+    //IE forEach FIX
+    (function () {
+        if ( typeof NodeList.prototype.forEach === "function" ) return false;
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    })();
 
     this.version = '0.1.5';
 
@@ -13,9 +19,17 @@ function Blend () {
         _modelObj = {},
         _dump_ = [];
 
+    /*
+    Create an id for items. 
+    */
     function createBlendId () {
-        return "Blend_" + String(Math.floor(Math.random() * 1000)).substring(0, 5) + "_elm" + String(Math.floor(Math.random() * 2000)).substring(0, 5);
+        return "blend_" + String(Math.floor(Math.random() * 1000)).substring(0, 5) + "_elm" + String(Math.floor(Math.random() * 2300)).substring(0, 5);
     }
+
+
+    /*
+    Generate "blendSupply" objects from an array of strings 
+    */
     function createBlendSupply(arr, b) {
 
         let proto_model = [];
@@ -139,8 +153,11 @@ function Blend () {
         }
     }
 
+    /*
+    To draw html from an array of objects "blendSupply". 
+    */
 
-
+    //TODO: Convert a recursive function to a loop in an array.
 
     function renderHTML(block, func) {
         function iterator (array, parent) {
@@ -166,6 +183,10 @@ function Blend () {
         iterator(block);
     }
 
+
+    /*
+    Find the element by "blendName" in "blendSupply". 
+    */
     function findBlendName (supply, prop, fn, type) {
         let searchType,
             result = 0;
@@ -206,14 +227,27 @@ function Blend () {
 
         return result;
     }
+
+
+    /*
+    Update Event.
+    */
     this.updateEvent = new Event("Blend.update");
     this.update = function () {
         _dump_ = [];
-        return document.dispatchEvent(_this_.updateEvent);
+        return document.dispatchEvent(_this_.updateEvent); 
     };
+
+    /*
+    Init class function.
+    */
     this.class = function (el) {
         return new el();
     };
+
+    /*
+    blend.component
+    */
     this.component = function () {
 
         let _this = this,
@@ -229,7 +263,7 @@ function Blend () {
 
         return {
             render: function (el) {
-                element = document.querySelector(el);
+                element = document.querySelector(el); 
 
                 renderHTML(_view, function (i) {
                     element.append(_view[i].element);
@@ -263,7 +297,14 @@ function Blend () {
             }
         }
     };
+
+    /*
+    controller methods
+    */
     this.reg = function (BlendSupply) {
+
+        //add ellements function.
+        //for the methods "append, prepend, create"
         function addElement(mytype, input, output) {
             let _output = [];
 
@@ -292,6 +333,7 @@ function Blend () {
             });
 
             return {
+                //register in "blendSupply" with a new name
                 supplement: function (name) {
                     let block = [],
                         fsArr = [BlendSupplyClone];
@@ -323,21 +365,26 @@ function Blend () {
                     });
 
                     return {
+                        //Save name in attribute
                         deliver: function () {
                             block[0].element.setAttribute("data-blend-name", block[0].blendName);
                         },
+                        //rename children element
                         renameChild: function (nm, newName) {
                             findBlendName (block[0].childElement, nm, function (item) {
                                 item.blendName = newName;
                                 item.blendSupply = item.blendSupply.replace("(" + nm + ")","(" +  newName + ")");
                             });
                         },
+                        //rename children element
                         innerBefore: function (text) {
                             block[0].element.prepend(text);
                         },
+                        //insert content after
                         innerAfter: function (text) {
                             block[0].element.append(text);
                         },
+                        //insert content for children
                         child: function (name) {
                             return {
                                 inner: function (content) {
@@ -357,15 +404,24 @@ function Blend () {
                                 }
                             }
                         },
-                        attr: function (key, val) {
-                            block[0].element.setAttribute(key, val);
+                        //Attribute
+                        attr: {
+                            set : function (name, value) {
+                                block[0].element.setAttribute(name, value);
+                            },
+                            get : function (name) {
+                                return block[0].element.getAttribute(name);
+                            }
                         },
+                        //Add css class
                         addClass: function (className) {
                             block[0].element.classList.add(className);
                         },
+                        //remove css class
                         removeClass: function (className) {
                             block[0].element.classList.remove(className);
                         },
+                        //insert content
                         inner: function (content) {
                             block[0].element.innerHTML = content;
                         },
@@ -373,6 +429,7 @@ function Blend () {
                 }
             }
         }
+        //Event handling function
         function getEvent(target, prop, func) {
             let bef = null;
             document.addEventListener("Blend.update", function () {
@@ -402,12 +459,16 @@ function Blend () {
 
             _this_.update();
         }
+
+        //Event handling function lvl2
         function eventProp (prop, e) {
             prop.run.call(_this_.reg(BlendSupply), e);
             if(prop.update === true) {
                 _this_.update();
             }
         }
+
+        //search
         function search(s, stype) {
             let result = undefined;
             findBlendName (BlendSupply, s, function (item) {
@@ -418,6 +479,7 @@ function Blend () {
         }
 
         return {
+            //Filter by name
             it: function(BlendName) {
                 let _input = null;
 
@@ -433,6 +495,7 @@ function Blend () {
                 }
 
                 return {
+                    //draw an element
                     draw : function (prop) {
                         if(prop.data === undefined) {
                             prop.data = [0];
@@ -453,12 +516,14 @@ function Blend () {
                             });
                         }
                     },
+                    //rename element
                     rename: function (newName) {
                         findBlendName (BlendSupply, _input, function (item) {
                             item.blendName = newName;
                             item.blendSupply = item.blendSupply.replace("(" + _input + ")","(" +  newName + ")");
                         });
                     },
+                    //get the value of the field
                     value: {
                         get: function () {
                             return _input.element.value;
@@ -467,18 +532,23 @@ function Blend () {
                             return _input.element.value = val;
                         }
                     },
+                    //remove element in html
                     remove: function () {
                         _input.element.remove();
                     },
+                    //create element
                     create: function (output) {
                         return addElement("create", _input, output);
                     },
+                    //create element after
                     append: function (output) {
                         return addElement("append", _input, output);
                     },
+                    //create element before
                     prepend: function (output) {
                         return addElement("prepend", _input, output);
                     },
+                    //replace element
                     refactor: function (output) {
 
                         let _output = [];
@@ -489,6 +559,7 @@ function Blend () {
 
                         _input.element.replaceWith(_output.element);
                     },
+                    //get element index
                     childIndex : function (name) {
                         let index;
                         for(let i = 0; i <  _input.childElement.length; i++) {
@@ -498,9 +569,11 @@ function Blend () {
                         }
                         return i;
                     },
+                    //get amount of elements
                     childLength : function () {
                         return _input.childElement.length;
                     },
+                    //get, set attribute 
                     attr: {
                         set : function (name, value) {
                             _input.element.setAttribute(name, value);
@@ -509,15 +582,19 @@ function Blend () {
                             return _input.element.getAttribute(name);
                         }
                     },
+                    //insert content
                     inner: function (content) {
                         _input.element.innerHTML = content;
                     },
+                    //insert content after
                     innerAfter: function (content) {
                         _input.element.append(content);
                     },
+                    //insert content before
                     innerBefore: function (content) {
                         _input.element.prepend(content);
                     },
+                    //redraw element in html
                     redraw: function (BlendHtml) {
                         let block = [];
 
@@ -531,6 +608,7 @@ function Blend () {
                     el: _input.element
                 }
             },
+            //each function
             each: function (func) {
                 function supplyEach(bs) {
                     for(let i = 0; i < bs.length; i++) {
@@ -542,15 +620,19 @@ function Blend () {
                 }
                 supplyEach(BlendSupply);
             },
+            //get id
             searchId: function (id) {
                 return search(id, "id");
             },
+            //get className
             searchClass: function (className) {
                 return search(className, "class");
             },
+            //get element id
             searchBlendId: function (id) {
                 return search(id, "blendId");
             },
+            //create elements in "blendSupply"
             build: function (prop) {
                 if(prop.data === undefined) {
                     prop.data = [0];
@@ -566,6 +648,7 @@ function Blend () {
                     }
                 }
             },
+            //events
             onEvent: function (target) {
                 return {
                     click: function (prop) {
@@ -609,4 +692,5 @@ function Blend () {
 
 }
 
+//init
 const blend = new Blend();

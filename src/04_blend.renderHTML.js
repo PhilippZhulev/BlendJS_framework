@@ -1,5 +1,8 @@
+    /*
+    To draw html from an array of objects "blendSupply". 
+    */
 
-
+    //TODO: Convert a recursive function to a loop in an array.
 
     function renderHTML(block, func) {
         function iterator (array, parent) {

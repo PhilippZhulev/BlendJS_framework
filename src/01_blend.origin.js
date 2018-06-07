@@ -1,8 +1,14 @@
 /*
-* Copyright (c) 2018, Philipp Zhulev.
+* Copyright (c) 2018, Philipp Zhulev. 
 */
 
 function Blend () {
+
+    //IE forEach FIX
+    (function () {
+        if ( typeof NodeList.prototype.forEach === "function" ) return false;
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    })();
 
     this.version = '0.1.5';
 

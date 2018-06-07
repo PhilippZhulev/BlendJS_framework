@@ -1,3 +1,6 @@
+    /*
+    blend.component
+    */
     this.component = function () {
 
         let _this = this,
@@ -13,7 +16,7 @@
 
         return {
             render: function (el) {
-                element = document.querySelector(el);
+                element = document.querySelector(el); 
 
                 renderHTML(_view, function (i) {
                     element.append(_view[i].element);
