@@ -206,7 +206,7 @@
                             if(prop.before !== undefined) {
                                 prop.before(prop.data[i], i);
                             }
-                            createBlendSupply(prop.render(prop.data[i], i), block);
+                            createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, block);
                             if(prop.after !== undefined) {
                                 prop.after(prop.data[i], i);
                             }
@@ -273,7 +273,7 @@
                     childLength : function () {
                         return _input.childElement.length;
                     },
-                    //get, set attribute 
+                    //get, set attribute
                     attr: {
                         set : function (name, value) {
                             _input.element.setAttribute(name, value);
@@ -342,7 +342,7 @@
                     if(prop.before !== undefined) {
                         prop.before(prop.data[i], i);
                     }
-                    createBlendSupply(prop.render(prop.data[i], i), BlendSupply);
+                    createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, BlendSupply);
                     if(prop.after !== undefined) {
                         prop.after(prop.data[i], i);
                     }
@@ -375,6 +375,20 @@
                     keydown: function (prop) {
                         return getEvent(target, prop, function (item, e) {
                             item.element.onkeydown = function () {
+                                eventProp(prop, e);
+                            };
+                        });
+                    },
+                    mouseOver: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            item.element.onmouseover = function () {
+                                eventProp(prop, e);
+                            };
+                        });
+                    },
+                    onmouseOut: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            item.element.onmouseout = function () {
                                 eventProp(prop, e);
                             };
                         });

@@ -1,7 +1,7 @@
 {
-  "name": "BlendJS_framework",
+  "name": "BlendJS",
   "description": "JavaScript open source library for building user interfaces.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": {
     "name": "Philipp Zhulev",
     "email": "Filippja@gmail.com"
