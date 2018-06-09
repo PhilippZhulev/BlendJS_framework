@@ -162,11 +162,9 @@ class Hello extends blend.component {
         const reg = blend.reg(this);
 
         reg.build({
-            render: function() {
-                return {{
-                    h2.my_click(out)>{data.click}
-                }}
-            }
+            render: {{
+                h2.my_click(out)>{data.click}
+            }}
         });
 
         function clickRefactor () {
