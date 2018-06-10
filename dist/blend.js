@@ -504,11 +504,14 @@ function Blend () {
 
                         createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
 
-                        findBlendName (block, _input.blendName, function (item) {
-                            _input.element.replaceWith(item.element);
-                            _input.element = item.element;
-                            _input.id = item.id;
-                            _input.classes = item.classes;
+                        renderHTML(block, function (inc) {
+                            if(block[inc].blendName === _input.blendName) {
+                                _input.element.replaceWith(block[inc].element);
+
+                                _input.id =      block[inc].id;
+                                _input.classes = block[inc].classes;
+                                _input.element = block[inc].element;
+                            }
                         });
                     },
                     draw : function (prop) {
