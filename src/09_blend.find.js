@@ -387,42 +387,48 @@
                 return {
                     click: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onclick = function () {
+                            item.element.onclick = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
                     },
                     keyup: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onkeyup = function () {
+                            item.element.onkeyup = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
                     },
                     change: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onchange = function () {
+                            item.element.onchange = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
                     },
                     keydown: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onkeydown = function () {
+                            item.element.onkeydown = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
                     },
                     mouseOver: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onmouseover = function () {
+                            item.element.onmouseover = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
                     },
                     onmouseOut: function (prop) {
                         return getEvent(target, prop, function (item, e) {
-                            item.element.onmouseout = function () {
+                            item.element.onmouseout = function (ev) {
+                                e.mouse = ev;
                                 eventProp(prop, e);
                             };
                         });
