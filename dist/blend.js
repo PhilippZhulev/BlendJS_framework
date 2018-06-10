@@ -435,7 +435,8 @@ function Blend () {
         //Event handling function
         function getEvent(target, prop, func) {
             let bef = null;
-            document.addEventListener("Blend.update", function () {
+
+            function scope() {
                 if(prop.before !== undefined) {
                     bef = prop.before.call(_this_.reg(BlendSupply));
                 }
@@ -458,9 +459,14 @@ function Blend () {
                         });
                     }
                 }
-            });
+            }
 
-            _this_.update();
+            document.addEventListener("Blend.update", function () {
+                if(prop.updated === true) {
+                    scope();
+                }
+            });
+            scope();
         }
 
         //Event handling function lvl2
@@ -723,12 +729,7 @@ function Blend () {
                                 eventProp(prop, e);
                             };
                         });
-                    },
-                    now: function (prop) {
-                        return getEvent(target, prop, function (item, e) {
-                            eventProp(prop, e);
-                        });
-                    },
+                    }
                 }
             },
             blendSupply: BlendSupply

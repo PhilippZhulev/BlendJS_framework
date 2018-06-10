@@ -1,28 +1,25 @@
-class InputOutput extends blend.component {
+class Timer extends blend.component {
     model () {
-        this.title = "Hello";
-        this.name = " Nick";
+        this.title = "Timer";
+        this.sec = 0;
     }
-    view () { 
+    view () {
         return {{
-            p(hello)>{this.title}
-            button.my_btn(btn)>Click!
+            h2>{this.title}
+            b.timer(time)>{this.sec} sec.
+                span> are you here.
         }}
     }
     controller(data) {
         const reg = blend.reg(this);
 
-        function setName () {
-            this.it("hello").redraw({{
-                p>
-                    b.ready>{data.title + data.name}
-            }});
+        function time () {
+            data.sec++;
+            reg.it("time").updateState();
         }
 
-        reg.onEvent("btn").click({
-            run: setName
-        });
+        setInterval(time, 1000);
     }
 }
 
-blend.class(InputOutput).render(".app");
+blend.class(Timer).render(".app");
