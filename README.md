@@ -56,12 +56,13 @@ class Timer extends blend.component {
             reg.it("time").updateState();
         }
 
-        setInterval(time, 1000);
+        let count = setInterval(time, 1000);
 
         reg.onEvent("stop").click({
             run: function(e) {
                 this.it("time").refactor("stoped");
                 this.it(e.target).remove();
+                clearInterval(count);
             }
         });
     }
@@ -150,47 +151,42 @@ Curly brackets "**{..}**" in "jsf" allow inserting elements of the js-code into 
 Now add the controller
 ###### JSF
 ```javascript
-class Timer extends blend.component {
+class Hello extends blend.component {
+
     model () {
-        this.title = "Timer";
-        this.sec = 0;
+        this.hello = "Hello";
+        this.name = " Nick";
+        this.click = "Click!"
     }
+
     view () {
         return {{
-            h2>{this.title}
-            div.timer
-                p(time)>{this.sec} seconds
-                    span> are you here.
-            button(stop)[type=button]>Stop
+            div.block#block_1[data-target=block_1]
+                h1.title(in)>{this.hello + this.name}!
+                button(btn)>Refactor!
         }}
     }
+
     controller(data) {
         const reg = blend.reg(this);
 
         reg.build({
             create: {{
-                p(stoped)>countdown stopped.
+                h2.my_click(out)>{data.click}
             }}
         });
 
-        function time () {
-            data.sec++;
-            reg.it("time").updateState();
+        function clickRefactor () {
+            this.it("in").refactor("out");
         }
 
-        let count = setInterval(time, 1000);
-
-        reg.onEvent("stop").click({
-            run: function(e) {
-                this.it("time").refactor("stoped");
-                this.it(e.target).remove();
-                clearInterval(count);
-            }
+        reg.onEvent("btn").click({
+            run: clickRefactor
         });
     }
 }
 
-blend.class(Timer).render(".app");
+blend.class(Hello).render(".app");
 ```
 As a result, when you click on the "Refactor" button, "Hello Nick!" Will be replaced with "Click!".
 
