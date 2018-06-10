@@ -235,8 +235,7 @@ function Blend () {
     */
     this.updateEvent = new Event("Blend.update");
     this.update = function () {
-        _dump_ = [];
-        return document.dispatchEvent(_this_.updateEvent); 
+        return document.dispatchEvent(_this_.updateEvent);
     };
 
     /*
@@ -254,17 +253,20 @@ function Blend () {
         let _this = this,
             _view = [];
 
+
         if(_this.model !== undefined) {
             _this.model.call(_modelObj);
         }
 
+        _dump_ = _this.view;
+
         if(_this.view !== undefined) {
-            createBlendSupply(_this.view.call(_modelObj, _modelObj), _view);
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
         }
 
         return {
             render: function (el) {
-                element = document.querySelector(el); 
+                element = document.querySelector(el);
 
                 renderHTML(_view, function (i) {
                     element.append(_view[i].element);
@@ -497,6 +499,18 @@ function Blend () {
 
                 return {
                     //draw an element
+                    updateState: function() {
+                        let block = [];
+
+                        createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
+
+                        findBlendName (block, _input.blendName, function (item) {
+                            _input.element.replaceWith(item.element);
+                            _input.element = item.element;
+                            _input.id = item.id;
+                            _input.classes = item.classes;
+                        });
+                    },
                     draw : function (prop) {
                         if(prop.data === undefined) {
                             prop.data = [0];
@@ -514,13 +528,17 @@ function Blend () {
                                 prop.after(prop.data[i], i);
                             }
 
+                            if(prop.type === undefined) {
+                                prop.type = "append";
+                            }
+
                             renderHTML(block, function (inc) {
                                 switch (prop.type) {
-                                    case undefined || "append": _input.element.append(block[inc].element);
+                                    case "append": _input.element.append(block[inc].element);
                                     break;
                                     case "prepend": _input.element.prepend(block[inc].element);
                                     break;
-                                    case "rewrite": _input.element.innerHTML = block[inc].element; 
+                                    case "rewrite": _input.element.innerHTML = block[inc].element.outerHTML;
                                     break;
                                 }
                             });

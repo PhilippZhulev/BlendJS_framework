@@ -3,7 +3,7 @@ class InputOutput extends blend.component {
         this.title = "Hello";
         this.name = " Nick";
     }
-    view () {
+    view () { 
         return {{
             p(hello)>{this.title}
             button.my_btn(btn)>Click!
@@ -14,7 +14,7 @@ class InputOutput extends blend.component {
 
         function setName () {
             this.it("hello").redraw({{
-                p> 
+                p>
                     b.ready>{data.title + data.name}
             }});
         }

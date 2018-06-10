@@ -196,6 +196,18 @@
 
                 return {
                     //draw an element
+                    updateState: function() {
+                        let block = [];
+
+                        createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
+
+                        findBlendName (block, _input.blendName, function (item) {
+                            _input.element.replaceWith(item.element);
+                            _input.element = item.element;
+                            _input.id = item.id;
+                            _input.classes = item.classes;
+                        });
+                    },
                     draw : function (prop) {
                         if(prop.data === undefined) {
                             prop.data = [0];
@@ -213,13 +225,17 @@
                                 prop.after(prop.data[i], i);
                             }
 
+                            if(prop.type === undefined) {
+                                prop.type = "append";
+                            }
+
                             renderHTML(block, function (inc) {
                                 switch (prop.type) {
-                                    case undefined || "append": _input.element.append(block[inc].element);
+                                    case "append": _input.element.append(block[inc].element);
                                     break;
                                     case "prepend": _input.element.prepend(block[inc].element);
                                     break;
-                                    case "rewrite": _input.element.innerHTML = block[inc].element; 
+                                    case "rewrite": _input.element.innerHTML = block[inc].element.outerHTML;
                                     break;
                                 }
                             });

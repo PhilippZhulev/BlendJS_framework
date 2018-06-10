@@ -6,17 +6,20 @@
         let _this = this,
             _view = [];
 
+
         if(_this.model !== undefined) {
             _this.model.call(_modelObj);
         }
 
+        _dump_ = _this.view;
+
         if(_this.view !== undefined) {
-            createBlendSupply(_this.view.call(_modelObj, _modelObj), _view);
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
         }
 
         return {
             render: function (el) {
-                element = document.querySelector(el); 
+                element = document.querySelector(el);
 
                 renderHTML(_view, function (i) {
                     element.append(_view[i].element);
