@@ -11,7 +11,7 @@ class Timer extends blend.component {
         }}
     }
     controller(data) {
-        const reg = blend.reg(this);
+        const reg = blend.reg(this); 
 
         function time () {
             data.sec++;
