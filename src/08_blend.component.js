@@ -14,7 +14,7 @@
         _dump_ = _this.view;
 
         if(_this.view !== undefined) {
-            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view); 
         }
 
         return {

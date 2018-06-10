@@ -155,12 +155,12 @@ function Blend () {
     }
 
     /*
-    To draw html from an array of objects "blendSupply". 
+    To draw html from an array of objects "blendSupply".
     */
 
     //TODO: Convert a recursive function to a loop in an array.
 
-    function renderHTML(block, func) {
+    function renderHTML(block, func, a) {
         function iterator (array, parent) {
             let item, index = 0, length = array.length;
 
@@ -175,8 +175,8 @@ function Blend () {
                     iterator(item.childElement, item.element);
                 }
 
-                if(array[index].spacesLength === 0) {
-                    func(index);
+                if(array[index].spacesLength === 0 || a === true) {
+                    func(index, item);
                 }
             }
         }
@@ -261,7 +261,7 @@ function Blend () {
         _dump_ = _this.view;
 
         if(_this.view !== undefined) {
-            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view); 
         }
 
         return {
@@ -510,15 +510,15 @@ function Blend () {
 
                         createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
 
-                        renderHTML(block, function (inc) {
-                            if(block[inc].blendName === _input.blendName) {
-                                _input.element.replaceWith(block[inc].element);
+                        renderHTML(block, function (inc, item) {
+                            if(item.blendName === _input.blendName) {
+                                _input.element.replaceWith(item.element);
 
-                                _input.id =      block[inc].id;
-                                _input.classes = block[inc].classes;
-                                _input.element = block[inc].element;
+                                _input.id =      item.id;
+                                _input.classes = item.classes;
+                                _input.element = item.element;
                             }
-                        });
+                        }, true);
                     },
                     draw : function (prop) {
                         if(prop.data === undefined) {
@@ -679,7 +679,7 @@ function Blend () {
                     if(prop.before !== undefined) {
                         prop.before(prop.data[i], i);
                     }
-                    createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, BlendSupply);
+                    createBlendSupply(typeof prop.create === "function" ? prop.create(prop.data[i], i) : prop.create, BlendSupply);
                     if(prop.after !== undefined) {
                         prop.after(prop.data[i], i);
                     }

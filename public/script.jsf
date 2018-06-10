@@ -6,12 +6,20 @@ class Timer extends blend.component {
     view () {
         return {{
             h2>{this.title}
-            b.timer(time)>{this.sec} sec.
-                span> are you here.
+            div.timer
+                p(time)>{this.sec} seconds
+                    span> are you here.
+            button(stop)[type=button]>Stop
         }}
     }
     controller(data) {
-        const reg = blend.reg(this); 
+        const reg = blend.reg(this);
+
+        reg.build({
+            create: {{
+                p(stoped)>countdown stopped.
+            }}
+        });
 
         function time () {
             data.sec++;
@@ -19,6 +27,13 @@ class Timer extends blend.component {
         }
 
         setInterval(time, 1000);
+
+        reg.onEvent("stop").click({
+            run: function(e) {
+                this.it("time").refactor("stoped");
+                this.it(e.target).remove();
+            }
+        });
     }
 }
 

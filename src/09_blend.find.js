@@ -207,15 +207,15 @@
 
                         createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
 
-                        renderHTML(block, function (inc) {
-                            if(block[inc].blendName === _input.blendName) {
-                                _input.element.replaceWith(block[inc].element);
+                        renderHTML(block, function (inc, item) {
+                            if(item.blendName === _input.blendName) {
+                                _input.element.replaceWith(item.element);
 
-                                _input.id =      block[inc].id;
-                                _input.classes = block[inc].classes;
-                                _input.element = block[inc].element;
+                                _input.id =      item.id;
+                                _input.classes = item.classes;
+                                _input.element = item.element;
                             }
-                        });
+                        }, true);
                     },
                     draw : function (prop) {
                         if(prop.data === undefined) {
@@ -376,7 +376,7 @@
                     if(prop.before !== undefined) {
                         prop.before(prop.data[i], i);
                     }
-                    createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, BlendSupply);
+                    createBlendSupply(typeof prop.create === "function" ? prop.create(prop.data[i], i) : prop.create, BlendSupply);
                     if(prop.after !== undefined) {
                         prop.after(prop.data[i], i);
                     }

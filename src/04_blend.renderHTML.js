@@ -1,10 +1,10 @@
     /*
-    To draw html from an array of objects "blendSupply". 
+    To draw html from an array of objects "blendSupply".
     */
 
     //TODO: Convert a recursive function to a loop in an array.
 
-    function renderHTML(block, func) {
+    function renderHTML(block, func, a) {
         function iterator (array, parent) {
             let item, index = 0, length = array.length;
 
@@ -19,8 +19,8 @@
                     iterator(item.childElement, item.element);
                 }
 
-                if(array[index].spacesLength === 0) {
-                    func(index);
+                if(array[index].spacesLength === 0 || a === true) {
+                    func(index, item);
                 }
             }
         }
