@@ -14,7 +14,7 @@ class InputOutput extends blend.component {
 
         function setName () {
             this.it("hello").redraw({{
-                p>
+                p> 
                     b.ready>{data.title + data.name}
             }});
         }

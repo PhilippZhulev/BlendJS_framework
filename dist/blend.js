@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2018, Philipp Zhulev. 
+* Copyright (c) 2018, Philipp Zhulev.
 */
 
 function Blend () {
@@ -10,7 +10,7 @@ function Blend () {
         NodeList.prototype.forEach = Array.prototype.forEach;
     })();
 
-    this.version = '0.1.5';
+    this.version = '0.1.6';
 
     const _this_ = this;
 
@@ -28,7 +28,7 @@ function Blend () {
 
 
     /*
-    Generate "blendSupply" objects from an array of strings 
+    Generate "blendSupply" objects from an array of strings
     */
     function createBlendSupply(arr, b) {
 
@@ -46,11 +46,11 @@ function Blend () {
                     className  = [],
                     ref = 0,
                     attr = 0,
-                    content = 0;
+                    content = 0,
 
-                let blendId = createBlendId();
+                    blendId = createBlendId(),
 
-                let classLength = 0;
+                    classLength = 0;
 
                 for(let inc = 0; inc < sim.length; inc++) {
 
@@ -138,6 +138,7 @@ function Blend () {
                         }
                     }
                 }
+
                 proto_model.forEach(function (item, inc) {
                     if(item.spacesLength === 0 && arr.length - 1 === i) {
                         b.push(item);
@@ -506,13 +507,22 @@ function Blend () {
                             if(prop.before !== undefined) {
                                 prop.before(prop.data[i], i);
                             }
-                            createBlendSupply(prop.render(prop.data[i], i), block);
+
+                            createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, block);
+
                             if(prop.after !== undefined) {
                                 prop.after(prop.data[i], i);
                             }
 
                             renderHTML(block, function (inc) {
-                                _input.element.append(block[inc].element);
+                                switch (prop.type) {
+                                    case undefined || "append": _input.element.append(block[inc].element);
+                                    break;
+                                    case "prepend": _input.element.prepend(block[inc].element);
+                                    break;
+                                    case "rewrite": _input.element.innerHTML = block[inc].element; 
+                                    break;
+                                }
                             });
                         }
                     },
@@ -573,7 +583,7 @@ function Blend () {
                     childLength : function () {
                         return _input.childElement.length;
                     },
-                    //get, set attribute 
+                    //get, set attribute
                     attr: {
                         set : function (name, value) {
                             _input.element.setAttribute(name, value);
@@ -642,7 +652,7 @@ function Blend () {
                     if(prop.before !== undefined) {
                         prop.before(prop.data[i], i);
                     }
-                    createBlendSupply(prop.render(prop.data[i], i), BlendSupply);
+                    createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, BlendSupply);
                     if(prop.after !== undefined) {
                         prop.after(prop.data[i], i);
                     }
@@ -675,6 +685,20 @@ function Blend () {
                     keydown: function (prop) {
                         return getEvent(target, prop, function (item, e) {
                             item.element.onkeydown = function () {
+                                eventProp(prop, e);
+                            };
+                        });
+                    },
+                    mouseOver: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            item.element.onmouseover = function () {
+                                eventProp(prop, e);
+                            };
+                        });
+                    },
+                    onmouseOut: function (prop) {
+                        return getEvent(target, prop, function (item, e) {
+                            item.element.onmouseout = function () {
                                 eventProp(prop, e);
                             };
                         });

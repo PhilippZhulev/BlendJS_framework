@@ -1,6 +1,6 @@
 
     /*
-    Generate "blendSupply" objects from an array of strings 
+    Generate "blendSupply" objects from an array of strings
     */
     function createBlendSupply(arr, b) {
 
@@ -18,11 +18,11 @@
                     className  = [],
                     ref = 0,
                     attr = 0,
-                    content = 0;
+                    content = 0,
 
-                let blendId = createBlendId();
+                    blendId = createBlendId(),
 
-                let classLength = 0;
+                    classLength = 0;
 
                 for(let inc = 0; inc < sim.length; inc++) {
 
@@ -110,6 +110,7 @@
                         }
                     }
                 }
+
                 proto_model.forEach(function (item, inc) {
                     if(item.spacesLength === 0 && arr.length - 1 === i) {
                         b.push(item);

@@ -206,13 +206,22 @@
                             if(prop.before !== undefined) {
                                 prop.before(prop.data[i], i);
                             }
+
                             createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, block);
+
                             if(prop.after !== undefined) {
                                 prop.after(prop.data[i], i);
                             }
 
                             renderHTML(block, function (inc) {
-                                _input.element.append(block[inc].element);
+                                switch (prop.type) {
+                                    case undefined || "append": _input.element.append(block[inc].element);
+                                    break;
+                                    case "prepend": _input.element.prepend(block[inc].element);
+                                    break;
+                                    case "rewrite": _input.element.innerHTML = block[inc].element; 
+                                    break;
+                                }
                             });
                         }
                     },

@@ -1,4 +1,4 @@
-# BlendJS 0.1.5
+# BlendJS 0.1.6
 [![BlendJS](https://img.shields.io/badge/blendJS-alpha-green.svg)](/PhilippZhulev/BlendJS_framework/archive/0.1.1.zip)
 ![apm](https://img.shields.io/apm/l/vim-mode.svg)
 
