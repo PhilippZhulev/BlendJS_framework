@@ -150,42 +150,47 @@ Curly brackets "**{..}**" in "jsf" allow inserting elements of the js-code into 
 Now add the controller
 ###### JSF
 ```javascript
-class Hello extends blend.component {
-
+class Timer extends blend.component {
     model () {
-        this.hello = "Hello";
-        this.name = " Nick";
-        this.click = "Click!"
+        this.title = "Timer";
+        this.sec = 0;
     }
-
     view () {
         return {{
-            div.block#block_1[data-target=block_1]
-                h1.title(in)>{this.hello + this.name}!
-                button(btn)>Refactor!
+            h2>{this.title}
+            div.timer
+                p(time)>{this.sec} seconds
+                    span> are you here.
+            button(stop)[type=button]>Stop
         }}
     }
-
     controller(data) {
         const reg = blend.reg(this);
 
         reg.build({
             create: {{
-                h2.my_click(out)>{data.click}
+                p(stoped)>countdown stopped.
             }}
         });
 
-        function clickRefactor () {
-            this.it("in").refactor("out");
+        function time () {
+            data.sec++;
+            reg.it("time").updateState();
         }
 
-        reg.onEvent("btn").click({
-            run: clickRefactor
+        let count = setInterval(time, 1000);
+
+        reg.onEvent("stop").click({
+            run: function(e) {
+                this.it("time").refactor("stoped");
+                this.it(e.target).remove();
+                clearInterval(count);
+            }
         });
     }
 }
 
-blend.class(Hello).render(".app");
+blend.class(Timer).render(".app");
 ```
 As a result, when you click on the "Refactor" button, "Hello Nick!" Will be replaced with "Click!".
 
