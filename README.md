@@ -43,9 +43,9 @@ class Timer extends blend.component {
         }}
     }
     controller(data) {
-        const reg = blend.reg(this);
+        const take = blend.watch(this);
 
-        reg.build({
+        take.build({
             create: {{
                 p(stoped)>countdown stopped.
             }}
@@ -53,12 +53,12 @@ class Timer extends blend.component {
 
         function time () {
             data.sec++;
-            reg.it("time").updateState();
+            take.it("time").updateState();
         }
 
         let count = setInterval(time, 1000);
 
-        reg.onEvent("stop").click({
+        take.onEvent("stop").click({
             run: function(e) {
                 this.it("time").refactor("stoped");
                 this.it(e.target).remove();
@@ -168,19 +168,19 @@ class Hello extends blend.component {
     }
 
     controller(data) {
-        const reg = blend.reg(this);
+        const take = blend.watch(this);
 
-        reg.build({
+        take.build({
             create: {{
                 h2.my_click(out)>{data.click}
             }}
         });
 
         function clickRefactor () {
-            this.it("in").refactor("out");
+            take.it("in").refactor("out");
         }
 
-        reg.onEvent("btn").click({
+        take.onEvent("btn").click({
             run: clickRefactor
         });
     }
@@ -200,18 +200,18 @@ this.it("in").refactor("out");
 ```
 Here we find the element **(in)** and replace it with the element **(out)**.
 ```javascript
-const reg = blend.reg(this);
+const take = blend.watch(this);
 ```
-"**blend.reg (this)**" binds a set of elements for convenience is stored in a constant.
+"**blend.watch(this)**" binds a set of elements for convenience is stored in a constant.
 "**this**" in controller is the base of the elements of the class.
 ```javascript
-reg.onEvent("btn").click({
+take.onEvent("btn").click({
     run: clickRefactor
 });
 ```
 Bind an event to an element by "**blendName**". Can work with an array of names.
 ```javascript
-reg.onEvent(["btn1", "btn2"]).click({
+take.onEvent(["btn1", "btn2"]).click({
     run: function(e) {
       console.log(e.index);
     }
@@ -219,9 +219,9 @@ reg.onEvent(["btn1", "btn2"]).click({
 ```
 In addition to the "**run**" property that triggers the function at the event, there are also the "**update: true**" properties - updates the events in the controller, and "**before: func ()**" performs the function when the event is initialized.
 
-The method "**reg.build**" allows you to create an element and add it to the database, without drawing it on the page.
+The method "**take.build**" allows you to create an element and add it to the database, without drawing it on the page.
 ```javascript
-reg.build({
+take.build({
     render: function() {
         return {{
             h2.my_click(out)>{data.click}

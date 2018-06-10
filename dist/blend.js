@@ -304,7 +304,7 @@ function Blend () {
     /*
     controller methods
     */
-    this.reg = function (BlendSupply) {
+    this.watch = function (BlendSupply) {
 
         //add ellements function.
         //for the methods "append, prepend, create"
@@ -327,7 +327,7 @@ function Blend () {
                 elmClone = elm.cloneNode(true);
 
                 if(mytype === "append") {
-                    input.element.append(elmClone);
+                    input.element.append(elmClone); 
                 }else if (mytype === "prepend") {
                     input.element.prepend(elmClone);
                 }else if(mytype === "create") {
@@ -438,7 +438,7 @@ function Blend () {
 
             function scope() {
                 if(prop.before !== undefined) {
-                    bef = prop.before.call(_this_.reg(BlendSupply));
+                    bef = prop.before.call(_this_.watch(BlendSupply));
                 }
                 if(typeof target === "string") {
                     findBlendName (BlendSupply, target, function(item) {
@@ -471,7 +471,7 @@ function Blend () {
 
         //Event handling function lvl2
         function eventProp (prop, e) {
-            prop.run.call(_this_.reg(BlendSupply), e);
+            prop.run.call(_this_.watch(BlendSupply), e);
             if(prop.update === true) {
                 _this_.update();
             }
