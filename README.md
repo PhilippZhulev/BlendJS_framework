@@ -170,7 +170,7 @@ class Hello extends blend.component {
         const reg = blend.reg(this);
 
         reg.build({
-            render: {{
+            create: {{
                 h2.my_click(out)>{data.click}
             }}
         });
