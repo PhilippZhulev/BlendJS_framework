@@ -26,12 +26,13 @@ class Timer extends blend.component {
             reg.it("time").updateState();
         }
 
-        setInterval(time, 1000);
+        let count = setInterval(time, 1000);
 
         reg.onEvent("stop").click({
             run: function(e) {
                 this.it("time").refactor("stoped");
                 this.it(e.target).remove();
+                clearInterval(count);
             }
         });
     }
