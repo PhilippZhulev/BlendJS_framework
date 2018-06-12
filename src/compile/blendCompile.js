@@ -50,9 +50,9 @@ function BlendCompile() {
                                     spaces = strings[1].split(sim[0])[0].match(/ /g).length
                                 }
                                 htmlResult += comment + '"' + strings[inr].slice(spaces) + '"';
-                                htmlResult = htmlResult.replace('{', '"+');
-                                htmlResult = htmlResult.replace('}', '+"');
-                                if(inr !== strings.length - 2) {
+                                htmlResult = htmlResult.replace(/{/g, '"+');
+                                htmlResult = htmlResult.replace(/}/g, '+"');
+                                if(inr !== strings.length - 2) { 
                                     htmlResult += ",\n";
                                 }
                             }

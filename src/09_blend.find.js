@@ -24,7 +24,7 @@
                 elmClone = elm.cloneNode(true);
 
                 if(mytype === "append") {
-                    input.element.append(elmClone); 
+                    input.element.append(elmClone);
                 }else if (mytype === "prepend") {
                     input.element.prepend(elmClone);
                 }else if(mytype === "create") {
@@ -159,7 +159,7 @@
             }
 
             document.addEventListener("Blend.update", function () {
-                if(prop.updated === true) {
+                if(prop.update === true) {
                     scope();
                 }
             });
@@ -189,15 +189,17 @@
             it: function(BlendName) {
                 let _input = null;
 
-                findBlendName (BlendSupply, BlendName, function (item) {
-                    _input = item;
-                });
-
                 if(Array.isArray(BlendName)) {
                     _input = [];
                     for(let i = 0; i < BlendName.length; i++) {
-                        _input.push(item);
+                        findBlendName (BlendSupply, BlendName[i], function (item) {
+                            _input.push(item);
+                        });
                     }
+                }else {
+                    findBlendName (BlendSupply, BlendName, function (item) {
+                        _input = item;
+                    });
                 }
 
                 return {
@@ -208,13 +210,24 @@
                         createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
 
                         renderHTML(block, function (inc, item) {
-                            if(item.blendName === _input.blendName) {
-                                _input.element.replaceWith(item.element);
+                            function items(el) {
+                                if(item.blendName === el.blendName) {
+                                    el.element.replaceWith(item.element);
 
-                                _input.id =      item.id;
-                                _input.classes = item.classes;
-                                _input.element = item.element;
+                                    el.id =      item.id;
+                                    el.classes = item.classes;
+                                    el.element = item.element;
+                                }
                             }
+
+                            if(Array.isArray(_input)) {
+                                for(var i = 0; i < _input.length; i++) {
+                                    items(_input[i]);
+                                }
+                            }else {
+                                items(_input);
+                            }
+
                         }, true);
                     },
                     draw : function (prop) {
