@@ -1,75 +1,39 @@
-// class Timer extends blend.component {
-//     model () {
-//         this.title = "Timer";
-//         this.sec = 0;
-//     }
-//     view () {
-//         return {{
-//             h2>{this.title}
-//             div.timer
-//                 p(time)>{this.sec} seconds
-//                     span> are you here.
-//             button(stop)[type=button]>Stop
-//         }}
-//     }
-//     controller(data) {
-//         const take = blend.watch(this);
-//
-//         take.build({
-//             create: {{
-//                 p(stoped)>countdown stopped.
-//             }}
-//         });
-//
-//         function time () {
-//             data.sec++;
-//             take.it("time").updateState();
-//         }
-//
-//         let count = setInterval(time, 1000);
-//
-//         take.onEvent("stop").click({
-//             run: function(e) {
-//                 this.it("time").refactor("stoped");
-//                 this.it(e.target).remove();
-//                 clearInterval(count);
-//             }
-//         });
-//     }
-// }
-//
-// blend.class(Timer).render(".app");
-
 class Timer extends blend.component {
     model () {
-        this.title = "Экран 1";
-        this.name = "two";
+        this.title = "Timer";
+        this.sec = 0;
     }
     view () {
         return {{
-            h2(title)>{this.title}
-            button(click)[type=button]>{this.name}
+            h2>{this.title}
+            div.timer
+                p(time)>{this.sec} seconds
+                    span> are you here.
+            button(stop)[type=button]>Stop
         }}
     }
     controller(data) {
         const take = blend.watch(this);
 
-        function frame (e) {
-            if(data.name === "two") {
-                data.title = "Экран 2";
-                data.name = "one";
-            }else {
-                data.title = "Экран 1";
-                data.name = "two";
-            }
+        take.build({
+            create: {{
+                p(stoped)>countdown stopped.
+            }}
+        });
 
-            this.it(["title", e.target]).updateState();
+        function time () {
+            data.sec++;
+            take.it("time").updateState();
         }
 
-        take.onEvent("click").click({
-            update: true,
-            updated: true,
-            run: frame
+        let count = setInterval(time, 1000);
+
+        take.onEvent("stop").click({
+            run: function(e) {
+                this.it("time").refactor("stoped");
+                this.it(e.target).remove();
+                clearInterval(count);
+            }
         });
     }
 }
