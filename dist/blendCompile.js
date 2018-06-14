@@ -52,7 +52,7 @@ function BlendCompile() {
                                 htmlResult += comment + '"' + strings[inr].slice(spaces) + '"';
                                 htmlResult = htmlResult.replace(/{/g, '"+');
                                 htmlResult = htmlResult.replace(/}/g, '+"');
-                                if(inr !== strings.length - 2) { 
+                                if(inr !== strings.length - 2) {
                                     htmlResult += ",\n";
                                 }
                             }
@@ -60,8 +60,10 @@ function BlendCompile() {
                     }
                     ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
                 }
-            }
-            eval(ready);
+            };
+
+            new Function(ready)();
+
         }
     }
 }

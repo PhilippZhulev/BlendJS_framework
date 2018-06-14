@@ -10,7 +10,7 @@ class Timer extends blend.component {
             div.timer
                 p(time)>{this.sec} seconds
                     span> are you here.
-            button(stop && click=stopFunc)[type=button]>Stop
+            button(stop && click=func)[type=button]>Stop
         }}
     }
     controller(data) {
