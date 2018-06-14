@@ -18,3 +18,15 @@ function Blend () {
         element,
         _modelObj = {},
         _dump_ = [];
+
+
+function eventCoolection() {
+    if(_modelObj.eventCollection !== undefined) {
+        for(let i = 0;i < _modelObj.eventCollection.length;i++) {
+            _modelObj.eventCollection[i].element.addEventListener(
+                _modelObj.eventCollection[i].event,
+                _modelObj[_modelObj.eventCollection[i].func]
+            );
+        }
+    }
+}

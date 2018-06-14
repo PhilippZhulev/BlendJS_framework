@@ -19,6 +19,18 @@ function Blend () {
         _modelObj = {},
         _dump_ = [];
 
+
+function eventCoolection() {
+    if(_modelObj.eventCollection !== undefined) {
+        for(let i = 0;i < _modelObj.eventCollection.length;i++) {
+            _modelObj.eventCollection[i].element.addEventListener(
+                _modelObj.eventCollection[i].event,
+                _modelObj[_modelObj.eventCollection[i].func]
+            );
+        }
+    }
+}
+
     /*
     Create an id for items. 
     */
@@ -47,6 +59,7 @@ function Blend () {
                     ref = 0,
                     attr = 0,
                     content = 0,
+                    evs = null ,
 
                     blendId = createBlendId(),
 
@@ -71,6 +84,7 @@ function Blend () {
                             break;
                     }
                 }
+
 
                 if(itemContent !== undefined) {
                     content = itemContent;
@@ -107,6 +121,17 @@ function Blend () {
                     spacesLen = 0;
                 }
 
+                if(typeof ref !== "number" && ref.indexOf("=") !== -1) {
+                    let clearRef = ref.replace(/ /g, "");
+                    if(ref.indexOf("&&") !== -1) {
+                        evs =  clearRef.split("&&")[1].split("=");
+                        ref =  clearRef.split("&&")[0];
+                    }else {
+                        evs =  clearRef.split("=");
+                        ref = 0;
+                    }
+                }
+
                 let indexVal = 1;
 
                 b.forEach(function (item, inc) {
@@ -125,8 +150,10 @@ function Blend () {
                     element: el,
                     classes: className,
                     sim: sim,
-                    blendSupply: arr[i]
+                    blendSupply: arr[i],
+                    eventFunc : evs
                 });
+
 
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
                     if(proto_model[i].spacesLength > proto_model[i - 1].spacesLength) {
@@ -177,6 +204,15 @@ function Blend () {
 
                 if(array[index].spacesLength === 0 || a === true) {
                     func(index, item);
+                }
+
+                if(array[index].eventFunc !== null) {
+                    _modelObj.eventCollection = []
+                    _modelObj.eventCollection.push({
+                        element: array[index].element,
+                        func: array[index].eventFunc[1],
+                        event: array[index].eventFunc[0]
+                    });
                 }
             }
         }
@@ -261,7 +297,7 @@ function Blend () {
         _dump_ = _this.view;
 
         if(_this.view !== undefined) {
-            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view); 
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
         }
 
         return {
@@ -280,7 +316,9 @@ function Blend () {
 
                 if(_this.controller !== undefined) {
                     _this.controller.call(BlendSupply, _modelObj);
+                    eventCoolection();
                 }
+
 
                 if(_this.onEvent !== undefined) {
                     _this.event.call(BlendSupply);

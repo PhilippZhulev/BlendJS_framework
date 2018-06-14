@@ -39,7 +39,7 @@ class Timer extends blend.component {
             div.timer
                 p(time)>{this.sec} seconds
                     span> are you here.
-            button(stop)[type=button]>Stop
+            button(stop && click=func)[type=button]>Stop
         }}
     }
     controller(data) {
@@ -51,20 +51,18 @@ class Timer extends blend.component {
             }}
         });
 
-        function time () {
+        data.time = function () {
             data.sec++;
             take.it("time").updateState();
         }
 
-        let count = setInterval(time, 1000);
+        let count = setInterval(data.time, 1000);
 
-        take.onEvent("stop").click({
-            run: function(e) {
-                this.it("time").refactor("stoped");
-                this.it(e.target).remove();
-                clearInterval(count);
-            }
-        });
+        data.func = function() {
+            take.it("time").refactor("stoped");
+            take.it("stop").remove();
+            clearInterval(count);
+        }
     }
 }
 

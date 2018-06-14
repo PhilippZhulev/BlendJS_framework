@@ -14,7 +14,7 @@
         _dump_ = _this.view;
 
         if(_this.view !== undefined) {
-            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view); 
+            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
         }
 
         return {
@@ -33,7 +33,9 @@
 
                 if(_this.controller !== undefined) {
                     _this.controller.call(BlendSupply, _modelObj);
+                    eventCoolection();
                 }
+
 
                 if(_this.onEvent !== undefined) {
                     _this.event.call(BlendSupply);

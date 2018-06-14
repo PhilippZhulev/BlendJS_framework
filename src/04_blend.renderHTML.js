@@ -22,6 +22,15 @@
                 if(array[index].spacesLength === 0 || a === true) {
                     func(index, item);
                 }
+
+                if(array[index].eventFunc !== null) {
+                    _modelObj.eventCollection = []
+                    _modelObj.eventCollection.push({
+                        element: array[index].element,
+                        func: array[index].eventFunc[1],
+                        event: array[index].eventFunc[0]
+                    });
+                }
             }
         }
 

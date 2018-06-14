@@ -19,6 +19,7 @@
                     ref = 0,
                     attr = 0,
                     content = 0,
+                    evs = null ,
 
                     blendId = createBlendId(),
 
@@ -43,6 +44,7 @@
                             break;
                     }
                 }
+
 
                 if(itemContent !== undefined) {
                     content = itemContent;
@@ -79,6 +81,17 @@
                     spacesLen = 0;
                 }
 
+                if(typeof ref !== "number" && ref.indexOf("=") !== -1) {
+                    let clearRef = ref.replace(/ /g, "");
+                    if(ref.indexOf("&&") !== -1) {
+                        evs =  clearRef.split("&&")[1].split("=");
+                        ref =  clearRef.split("&&")[0];
+                    }else {
+                        evs =  clearRef.split("=");
+                        ref = 0;
+                    }
+                }
+
                 let indexVal = 1;
 
                 b.forEach(function (item, inc) {
@@ -97,8 +110,10 @@
                     element: el,
                     classes: className,
                     sim: sim,
-                    blendSupply: arr[i]
+                    blendSupply: arr[i],
+                    eventFunc : evs
                 });
+
 
                 if(proto_model[i - 1] !== undefined && proto_model[i - 1].spacesLength !== undefined) {
                     if(proto_model[i].spacesLength > proto_model[i - 1].spacesLength) {
