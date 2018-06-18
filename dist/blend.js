@@ -568,6 +568,7 @@ function eventCoolection() {
                                     el.id =      item.id;
                                     el.classes = item.classes;
                                     el.element = item.element;
+                                    el.blendSupply = item.blendSupply;
                                 }
                             }
 
@@ -712,6 +713,8 @@ function eventCoolection() {
                 createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
 
                 renderHTML(block, function (inc, item) {
+
+                    if(item.blendName !== 0) {
                         let n = null;
                         findBlendName (BlendSupply, item.blendName, function (elem) {
                             n = elem
@@ -719,25 +722,21 @@ function eventCoolection() {
 
                         if(item.element.innerHTML !== n.element.innerHTML) {
                             n.element.innerHTML = item.element.innerHTML;
-                            n.element.innerHTML = item.element.innerHTML;
                         }
-
                         if(item.id !== n.id) {
-                            n.id = item.id;
                             n.id = item.id;
                         }
                         if(item.classes !== n.classes) {
                             n.classes = item.classes;
-                            n.classes = item.classes;
                         }
                         if(item.blendSupply !== n.blendSupply) {
-                            n.blendSupply = item.blendSupply;
                             n.blendSupply = item.blendSupply;
                         }
                         if(item.blendName !== n.blendName) {
                             n.blendName = item.blendName;
-                            n.blendName = item.blendName;
                         }
+                    }
+
                 }, true);
             },
             //each function
