@@ -24,7 +24,7 @@ class Timer extends blend.component {
 
         data.time = function () {
             data.sec++;
-            take.it("time").updateState();
+            take.updateStates();
         }
 
         let count = setInterval(data.time, 1000);
