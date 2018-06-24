@@ -32,7 +32,7 @@
                 Source = Source.concat(_view);
 
                 if(_this.controller !== undefined) {
-                    _this.controller.call(Source, _modelObj);
+                    _this.controller.call(_modelObj, Source);
                     eventCoolection();
                 }
 
