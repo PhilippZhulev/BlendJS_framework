@@ -1,25 +1,25 @@
     /*
     controller methods
     */
-    this.watch = function (BlendSupply) {
+    this.watch = function (Source) {
 
         //add ellements function.
         //for the methods "append, prepend, create"
         function addElement(mytype, input, output) {
             let _output = [];
 
-            findBlendName (BlendSupply, output, function (item) {
+            findBlendName (Source, output, function (item) {
                 _output.push(item);
             });
 
             let elmClone,
-                BlendSupplyClone,
+                sourceClone,
                 childClone;
 
             renderHTML(_output, function (i) {
                 let elm = _output[i].element;
 
-                BlendSupplyClone = _output[i].blendSupply;
+                sourceClone = _output[i].structure;
                 childClone = _output[i].childElement;
                 elmClone = elm.cloneNode(true);
 
@@ -33,16 +33,16 @@
             });
 
             return {
-                //register in "blendSupply" with a new name
+                //register in "Source" with a new name
                 supplement: function (name) {
                     let block = [],
-                        fsArr = [BlendSupplyClone];
+                        fsArr = [sourceClone];
 
                     for(let i = 0; i < childClone.length; i++) {
-                        fsArr.push(childClone[i].blendSupply);
+                        fsArr.push(childClone[i].structure);
                     }
 
-                    createBlendSupply(fsArr, block);
+                    createSource(fsArr, block);
 
                     block[0].blendName = name;
                     block[0].element = elmClone;
@@ -53,7 +53,7 @@
                         }
                     });
 
-                    findBlendName (BlendSupply, input.blendName, function (item) {
+                    findBlendName (Source, input.blendName, function (item) {
                         let clones = 0;
                         for(let ind = 0; ind < item.childElement.length; ind++) {
                             if(item.childElement[ind].blendName.indexOf(name) !== -1) {
@@ -73,7 +73,7 @@
                         renameChild: function (nm, newName) {
                             findBlendName (block[0].childElement, nm, function (item) {
                                 item.blendName = newName;
-                                item.blendSupply = item.blendSupply.replace("(" + nm + ")","(" +  newName + ")");
+                                item.structure = item.structure.replace("(" + nm + ")","(" +  newName + ")");
                             });
                         },
                         //rename children element
@@ -135,10 +135,10 @@
 
             function scope() {
                 if(prop.before !== undefined) {
-                    bef = prop.before.call(_this_.watch(BlendSupply));
+                    bef = prop.before.call(_this_.watch(Source));
                 }
                 if(typeof target === "string") {
-                    findBlendName (BlendSupply, target, function(item) {
+                    findBlendName (Source, target, function(item) {
                         return func(item, {
                             before: bef,
                             index: 0,
@@ -147,7 +147,7 @@
                     });
                 }else if(Array.isArray(target)) {
                     for(let i = 0; i < target.length; i++) {
-                        findBlendName (BlendSupply, target[i], function(item) {
+                        findBlendName (Source, target[i], function(item) {
                             return func(item, {
                                 before: bef,
                                 index: i,
@@ -168,7 +168,7 @@
 
         //Event handling function lvl2
         function eventProp (prop, e) {
-            prop.run.call(_this_.watch(BlendSupply), e);
+            prop.run.call(_this_.watch(Source), e);
             if(prop.update === true) {
                 _this_.update();
             }
@@ -177,7 +177,7 @@
         //search
         function search(s, stype) {
             let result = undefined;
-            findBlendName (BlendSupply, s, function (item) {
+            findBlendName (Source, s, function (item) {
                 result = item;
             }, stype);
 
@@ -192,12 +192,12 @@
                 if(Array.isArray(BlendName)) {
                     _input = [];
                     for(let i = 0; i < BlendName.length; i++) {
-                        findBlendName (BlendSupply, BlendName[i], function (item) {
+                        findBlendName (Source, BlendName[i], function (item) {
                             _input.push(item);
                         });
                     }
                 }else {
-                    findBlendName (BlendSupply, BlendName, function (item) {
+                    findBlendName (Source, BlendName, function (item) {
                         _input = item;
                     });
                 }
@@ -207,7 +207,7 @@
                     updateState: function() {
                         let block = [];
 
-                        createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
+                        createSource(_dump_.call(_modelObj, _modelObj), block);
 
                         renderHTML(block, function (inc, item) {
                             function items(el) {
@@ -217,7 +217,7 @@
                                     el.id =      item.id;
                                     el.classes = item.classes;
                                     el.element = item.element;
-                                    el.blendSupply = item.blendSupply;
+                                    el.structure = item.structure;
                                 }
                             }
 
@@ -242,7 +242,7 @@
                                 prop.before(prop.data[i], i);
                             }
 
-                            createBlendSupply(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, block);
+                            createSource(typeof prop.render === "function" ? prop.render(prop.data[i], i) : prop.render, block);
 
                             if(prop.after !== undefined) {
                                 prop.after(prop.data[i], i);
@@ -266,9 +266,9 @@
                     },
                     //rename element
                     rename: function (newName) {
-                        findBlendName (BlendSupply, _input, function (item) {
+                        findBlendName (Source, _input, function (item) {
                             item.blendName = newName;
-                            item.blendSupply = item.blendSupply.replace("(" + _input + ")","(" +  newName + ")");
+                            item.structure = item.structure.replace("(" + _input + ")","(" +  newName + ")");
                         });
                     },
                     //get the value of the field
@@ -301,7 +301,7 @@
 
                         let _output = [];
 
-                        findBlendName (BlendSupply, output, function (item) {
+                        findBlendName (Source, output, function (item) {
                             _output = item;
                         });
 
@@ -346,7 +346,7 @@
                     redraw: function (BlendHtml) {
                         let block = [];
 
-                        createBlendSupply(BlendHtml, block);
+                        createSource(BlendHtml, block);
 
                         renderHTML(block, function (i) {
                             _input.element.replaceWith(block[i].element);
@@ -359,34 +359,29 @@
             updateStates: function() {
                 let block = [];
 
-                createBlendSupply(_dump_.call(_modelObj, _modelObj), block);
+                createSource(_dump_.call(_modelObj, _modelObj), block);
 
-                renderHTML(block, function (inc, item) {
+                let n = document.createElement("div");
 
-                    if(item.blendName !== 0) {
-                        let n = null;
-                        findBlendName (BlendSupply, item.blendName, function (elem) {
-                            n = elem
-                        });
+                let items = element.childNodes;
 
-                        if(item.element.innerHTML !== n.element.innerHTML) {
-                            n.element.innerHTML = item.element.innerHTML;
-                        }
-                        if(item.id !== n.id) {
-                            n.id = item.id;
-                        }
-                        if(item.classes !== n.classes) {
-                            n.classes = item.classes;
-                        }
-                        if(item.blendSupply !== n.blendSupply) {
-                            n.blendSupply = item.blendSupply;
-                        }
-                        if(item.blendName !== n.blendName) {
-                            n.blendName = item.blendName;
+                function supplyEach(a,b) {
+                    for(let i = 0; i < a.length; i++) {
+                        if(a[i].source === "view") {
+                            if(a[i].structure !== b[i].structure) {
+                                a[i].element.replaceWith(b[i].element);
+                                a[i].element = b[i].element;
+                                a[i].structure = b[i].structure;
+                                a[i].classes = b[i].classes;
+                                a[i].id = b[i].id;
+                            }
+                            if(a[i].childElement !== 0) {
+                                supplyEach(a[i].childElement, b[i].childElement);
+                            }
                         }
                     }
-
-                }, true);
+                }
+                supplyEach(Source, block);
             },
             //each function
             each: function (func) {
@@ -398,7 +393,7 @@
                         }
                     }
                 }
-                supplyEach(BlendSupply);
+                supplyEach(Source);
             },
             //get id
             searchId: function (id) {
@@ -412,7 +407,7 @@
             searchBlendId: function (id) {
                 return search(id, "blendId");
             },
-            //create elements in "blendSupply"
+            //create elements in "Source"
             build: function (prop) {
                 if(prop.data === undefined) {
                     prop.data = [0];
@@ -422,7 +417,7 @@
                     if(prop.before !== undefined) {
                         prop.before(prop.data[i], i);
                     }
-                    createBlendSupply(typeof prop.create === "function" ? prop.create(prop.data[i], i) : prop.create, BlendSupply);
+                    createSource(typeof prop.create === "function" ? prop.create(prop.data[i], i) : prop.create, Source);
                     if(prop.after !== undefined) {
                         prop.after(prop.data[i], i);
                     }
@@ -481,6 +476,6 @@
                     }
                 }
             },
-            blendSupply: BlendSupply
+            blendSource: Source
         }
     };

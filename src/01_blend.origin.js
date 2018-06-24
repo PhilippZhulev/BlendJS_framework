@@ -10,11 +10,11 @@ function Blend () {
         NodeList.prototype.forEach = Array.prototype.forEach;
     })();
 
-    this.version = '0.1.8';
+    this.version = '0.1.9';
 
     const _this_ = this;
 
-    let BlendSupply = [],
+    let Source = [],
         element,
         _modelObj = {},
         _dump_ = [];

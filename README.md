@@ -28,6 +28,7 @@ JavaScript open source library for building user interfaces.
 ```
 ###### JSF
 ```javascript
+
 class Timer extends blend.component {
     model () {
         this.title = "Timer";
@@ -37,7 +38,8 @@ class Timer extends blend.component {
         return {{
             h2>{this.title}
             div.timer
-                p(time)>{this.sec} seconds
+                p(time)
+                    span>{this.sec} seconds
                     span> are you here.
             button(stop && click=stopFunc)[type=button]>Stop
         }}
@@ -59,9 +61,10 @@ class Timer extends blend.component {
         let count = setInterval(data.time, 1000);
 
         data.stopFunc = function() {
+            clearInterval(count);
+
             take.it("time").refactor("stoped");
             take.it("stop").remove();
-            clearInterval(count);
         }
     }
 }

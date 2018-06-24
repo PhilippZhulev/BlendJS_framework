@@ -14,7 +14,7 @@
         _dump_ = _this.view;
 
         if(_this.view !== undefined) {
-            createBlendSupply(_dump_.call(_modelObj, _modelObj), _view);
+            createSource(_dump_.call(_modelObj, _modelObj), _view, "view");
         }
 
         return {
@@ -26,32 +26,32 @@
                 });
 
                 if(_this.supply !== undefined) {
-                    createBlendSupply(_this.supply.call(_modelObj), BlendSupply);
+                    createSource(_this.supply.call(_modelObj), Source);
                 }
 
-                BlendSupply = BlendSupply.concat(_view);
+                Source = Source.concat(_view);
 
                 if(_this.controller !== undefined) {
-                    _this.controller.call(BlendSupply, _modelObj);
+                    _this.controller.call(Source, _modelObj);
                     eventCoolection();
                 }
 
 
                 if(_this.onEvent !== undefined) {
-                    _this.event.call(BlendSupply);
+                    _this.event.call(Source);
                 }
 
-                _this.BlendSupply = BlendSupply;
+                _this.Source = Source;
 
-                return BlendSupply;
+                return Source;
             },
             inheritance : function () {
-                return BlendSupply;
+                return Source;
             },
             clear: function () {
-                BlendSupply = [];
-                _this.BlendSupply = [];
-                return _this.BlendSupply;
+                Source = [];
+                _this.Source = [];
+                return _this.Source;
             }
         }
     };

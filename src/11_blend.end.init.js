@@ -1,4 +1,4 @@
 }
 
 //init
-const blend = new Blend();
+const blend = new Blend(); 

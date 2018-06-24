@@ -5,7 +5,7 @@ function BlendCompile() {
         let result = [];
         for(let i = 0; i < el.length; i++) {
 
-            if(el[i].getAttribute("type") === "text/blendjs") {
+            if(el[i].getAttribute("type") === "text/blend") {
                 let url = el[i].getAttribute("src");
 
                 let req = new XMLHttpRequest();
