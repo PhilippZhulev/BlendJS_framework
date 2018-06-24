@@ -22,7 +22,7 @@ JavaScript open source library for building user interfaces.
 
         <script src="dist/blendCompile.js"></script>
         <script src="dist/blend.js"></script>
-        <script type="text/blendjs" src="public/script.jsf"></script>
+        <script type="text/blend" src="public/script.jsf"></script>
     </body>
 </html>
 ```
