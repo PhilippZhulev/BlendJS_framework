@@ -12,9 +12,8 @@
         }
 
         _dump_ = _this.view;
-
         if(_this.view !== undefined) {
-            createSource(_dump_.call(_modelObj, _modelObj), _view, "view");
+                createSource(_dump_.call(_modelObj, _modelObj), _view, "view");
         }
 
         return {

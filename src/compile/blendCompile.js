@@ -25,12 +25,9 @@ function BlendCompile() {
             let ready = include[i],
                 spaces = 0,
                 htmlResult = "",
+                getstr = include[i].split(/>{{/g),
                 elmsOrigin =  include[i].split(/{{/g),
                 elmsEnd =  include[i].split(/}}/g);
-
-            let origin = include[i].replace(/{{/g, "["),
-                end = origin.replace(/}}/g, "]");
-
             for(let inc = 0; inc < elmsOrigin.length; inc++) {
                 htmlResult = "";
                 if(inc !== 0) {
@@ -58,7 +55,11 @@ function BlendCompile() {
                             }
                         }
                     }
-                    ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
+                    if(elmsOrigin[inc - 1].slice(-1) !== "#") {
+                        ready = ready.replace("{{" + result + "}}",  "[" + htmlResult + "]");
+                    }else {
+                        ready = ready.replace("#{{" + result + "}}",  htmlResult);
+                    }
                 }
             };
 
